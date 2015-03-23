@@ -1,8 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--//-->
-<LinearLayout
-
-    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
-
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="40dp"
@@ -23,16 +20,16 @@
             android:text="@string/demo"
             pixlui:copyandpaste="false"
             android:gravity="center_vertical"
-            pixlui:clearclipboardcontent="true"
-            pixlui:typeface="GearedSlab.ttf" />
+            pixlui:clearclipboardcontent="true" />
+        <!-- pixlui:typeface="GearedSlab.ttf"-->
+        <com.neopixl.pixlui.components.imageview.ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dropdown_menu_arrow"
+            android:scaleType="centerInside"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="7dp"
+            android:layout_marginLeft="7dp"
+            android:layout_alignParentRight="true" />
     </com.neopixl.pixlui.components.relativelayout.RelativeLayout>
-
-    <com.neopixl.pixlui.components.imageview.ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/dropdown_menu_arrow"
-        android:scaleType="centerInside"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="7dp"
-        android:layout_marginLeft="7dp" />
 </LinearLayout>
