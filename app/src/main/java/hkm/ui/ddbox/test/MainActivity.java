@@ -11,7 +11,7 @@ import hkm.ui.ddbox.lib.Droptouch;
 
 public class MainActivity extends ActionBarActivity {
     private int[] por = {
-            4, 2, 4
+            4, 3, 3
     };
     private String[] labels = {"cate", "size", "qty"};
 
@@ -22,8 +22,10 @@ public class MainActivity extends ActionBarActivity {
         LinearLayout g = (LinearLayout) findViewById(R.id.lvt);
         for (int i = 0; i < 3; i++) {
             final Droptouch d = new Droptouch(this);
-            //d.setLabel(labels[i]).setWidthHardCode(100);
-            d.initPortionCalculation(this).setPortion(por[i], 10);
+            d
+                    .initPortionCalculation(this)
+                    .setPortion(por[i], 10)
+                    .setLabel(labels[i]);
             g.addView(d);
         }
         g.requestLayout();
