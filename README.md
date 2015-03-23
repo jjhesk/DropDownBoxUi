@@ -35,5 +35,5 @@ The solution is very easy. I have wrapped pixlui inside the package and it will 
         final Droptouch d = new Droptouch(this);
         d.setLabel("One The Thing");
         g.addView(d);
-        
-        ```
+
+```
