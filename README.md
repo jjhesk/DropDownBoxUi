@@ -6,8 +6,8 @@ Version
 ========
 Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready 
 ```gradle
-	dependencies {
-	        compile 'com.github.jjhesk:DropDownBoxUi:'
+dependencies {
+	        compile 'com.github.jjhesk:DropDownBoxUi:v0.01'
 	}
 ```
 
