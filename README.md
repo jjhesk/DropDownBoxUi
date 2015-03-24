@@ -1,4 +1,4 @@
-# DropDownBoxUi[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)![Version](https://img.shields.io/github/tag/jjhesk/DropDownBoxUi.svg?label=maven) [![gitpay](http://fc07.deviantart.net/fs70/f/2012/336/f/9/little_pixel_heart_by_tiny_bear-d5mtwiu.gif)](https://gratipay.com/jjhesk/)
+# DropDownBoxUi[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)[![Version](https://img.shields.io/github/tag/jjhesk/DropDownBoxUi.svg?label=maven)](https://jitpack.io/#jjhesk/DropDownBoxUi/) [![gitpay](http://fc07.deviantart.net/fs70/f/2012/336/f/9/little_pixel_heart_by_tiny_bear-d5mtwiu.gif)](https://gratipay.com/jjhesk/)
 ========
 A custom made drop down box Ui for handy use.
 
