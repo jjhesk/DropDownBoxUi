@@ -4,11 +4,11 @@ A custom made drop down box Ui for handy use.
 
 Version
 ========
-Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready 
+Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready. X.X.X to be the lastest version possible you can fidn from the release log.
 ```gradle
 dependencies {
-	        compile 'com.github.jjhesk:DropDownBoxUi:v0.01'
-	}
+	        compile 'com.github.jjhesk:DropDownBoxUi:vX.X.X'
+}
 ```
 
 buildscript
