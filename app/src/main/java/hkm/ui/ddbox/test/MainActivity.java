@@ -10,9 +10,13 @@ import hkm.ui.ddbox.lib.Droptouch;
 
 
 public class MainActivity extends ActionBarActivity {
-    private int[] por = {
-            4, 3, 3
+    private float[] por3 = {
+            0.4f, 0.3f, 0.3f
     };
+    private float[] por2 = {
+            0.6f, 0.4f
+    };
+    private float sum = 1f;
     private String[] labels = {"cate", "size", "qty"};
 
     @Override
@@ -22,12 +26,19 @@ public class MainActivity extends ActionBarActivity {
         LinearLayout g = (LinearLayout) findViewById(R.id.lvt);
         for (int i = 0; i < 3; i++) {
             final Droptouch d = new Droptouch(this);
-            d
+           /* d
                     .initPortionCalculation(this)
                     .setPortion(por[i], 10)
+                    .setLabel(labels[i]);*/
+
+            d
+                    //.setButtonFace(R.drawable.hb_back)
+                    .setPortionAuto(por3[i])
                     .setLabel(labels[i]);
+
             g.addView(d);
         }
+        g.setWeightSum(sum);
         g.requestLayout();
     }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.neopixl.pixlui.components.relativelayout.RelativeLayout;
@@ -81,6 +82,16 @@ public class Droptouch extends LinearLayout {
         return this;
     }
 
+    public Droptouch setPortionAuto(float factor) {
+        setLayoutParams(getParamWeight(factor));
+        return this;
+    }
+
+    public Droptouch setButtonFace(int resId) {
+        main.setBackgroundResource(resId);
+        return this;
+    }
+
     private OnClickListener tp = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -132,11 +143,8 @@ public class Droptouch extends LinearLayout {
         return new LinearLayout.LayoutParams(h, -2);
     }
 
-/*
-    public void requestLayout() {
-        super.requestLayout();
-        if (tv != null)
-            tv.setText(label);
-    }*/
+    private LinearLayout.LayoutParams getParamWeight(float weight) {
+        return new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, weight);
+    }
 
 }

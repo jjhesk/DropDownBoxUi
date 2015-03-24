@@ -22,6 +22,17 @@ repositories {
 
 ```
 
+Apps using DropTouch
+=============
+
+
+
+Feel free to shoot me an email if your app is using it
+
+Developed By
+=============
+Hesk <jobhesk@gmail.com>
+
 
 Sample Scripts
 ============
