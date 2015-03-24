@@ -28,10 +28,10 @@ Sample Scripts
 The solution is very easy. I have wrapped pixlui inside the package and it will shared the library across the whole system. If you have a simple linear layout and you will just need to append them on the fly like so:
 ```java
 
- setContentView(R.layout.activity_main);
+ 	setContentView(R.layout.activity_main);
         LinearLayout g = (LinearLayout) findViewById(R.id.lvt);
-        
-        //you can repeat that process however times you want.
+
+	//you can repeat that process however times you want.
         final Droptouch d = new Droptouch(this);
         d.setLabel("One The Thing");
         g.addView(d);
