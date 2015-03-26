@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import hkm.ui.ddbox.lib.Droptouch;
 
@@ -34,7 +36,13 @@ public class MainActivity extends ActionBarActivity {
             d
                     //.setButtonFace(R.drawable.hb_back)
                     .setPortionAuto(por3[i])
-                    .setLabel(labels[i]);
+                    .setLabel(labels[i])
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(v.getContext(), "click this now", Toast.LENGTH_SHORT);
+                        }
+                    });
 
             g.addView(d);
         }

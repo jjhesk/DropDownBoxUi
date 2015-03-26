@@ -10,8 +10,16 @@
     <LinearLayout
         android:id="@+id/lvt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/material_blue_grey_800"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
 
     </LinearLayout>
 </RelativeLayout>

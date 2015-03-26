@@ -1,17 +1,20 @@
 package hkm.ui.ddbox.lib;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-import com.neopixl.pixlui.components.relativelayout.RelativeLayout;
 import com.neopixl.pixlui.components.textview.TextView;
 
 /**
@@ -48,16 +51,16 @@ public class Droptouch extends LinearLayout {
     /**
      * initialization
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void init() {
         vId = getRootView().generateViewId();
-
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         child = (LinearLayout) inflater.inflate(R.layout.ddbox_lib_body, this, true);
-        main = (LinearLayout) child.getChildAt(0);
-        fme = (RelativeLayout) main.getChildAt(0);
-        tv = (TextView) fme.getChildAt(0);
+        //main = (LinearLayout) child.getChildAt(0);
+        fme = (RelativeLayout) child.getChildAt(0);
+        tv = (TextView) fme.getChildAt(1);
         tv.setId(vId);
-        main.setOnClickListener(tp);
+        ((Button) fme.getChildAt(0)).setOnClickListener(tp);
     }
 
     public static String TAG = "DropTouch";
