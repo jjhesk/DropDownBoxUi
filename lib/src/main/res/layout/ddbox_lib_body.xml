@@ -3,15 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/button_face"
     android:layout_height="match_parent"
-    android:layout_width="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:fadingEdge="horizontal">
+    android:layout_width="match_parent"
+    android:padding="2dp"
+    android:clickable="true">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/hb_empty" />
+    <!-- <Button
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@drawable/hb_empty" />-->
+    <!--
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />-->
 
     <com.neopixl.pixlui.components.textview.TextView
         android:textColor="@color/box_text"

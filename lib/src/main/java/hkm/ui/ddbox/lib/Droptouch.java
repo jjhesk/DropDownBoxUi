@@ -17,12 +17,12 @@ import android.widget.RelativeLayout;
 
 import com.neopixl.pixlui.components.textview.TextView;
 
+import java.util.Objects;
+
 /**
  * Created by hesk on 3/23/15.
  */
 public class Droptouch extends LinearLayout {
-
-
     private String label = "";
     private int vId;
     private TextView tv;
@@ -48,6 +48,8 @@ public class Droptouch extends LinearLayout {
         init();
     }
 
+    private Button button;
+
     /**
      * initialization
      */
@@ -58,9 +60,25 @@ public class Droptouch extends LinearLayout {
         child = (LinearLayout) inflater.inflate(R.layout.ddbox_lib_body, this, true);
         //main = (LinearLayout) child.getChildAt(0);
         fme = (RelativeLayout) child.getChildAt(0);
-        tv = (TextView) fme.getChildAt(1);
+        tv = (TextView) fme.getChildAt(0);
         tv.setId(vId);
-        ((Button) fme.getChildAt(0)).setOnClickListener(tp);
+        // button = ((Button) fme.getChildAt(0));
+        //.setOnClickListener(tp);
+    }
+
+
+    public void setTag(int n) {
+        fme.setTag(n);
+    }
+
+    @Override
+    public Object getTag() {
+        return (int) fme.getTag();
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener listener) {
+        fme.setOnClickListener(listener);
     }
 
     public static String TAG = "DropTouch";
@@ -90,6 +108,27 @@ public class Droptouch extends LinearLayout {
         return this;
     }
 
+    public Droptouch setRightMargin(int r) {
+        //MarginLayoutParams mp = new MarginLayoutParams(getLay);
+        fme.setPadding(0, 0, r, 0);
+        fme.requestLayout();
+
+        return this;
+    }
+
+    public Droptouch setLeftMargin(int l) {
+        //MarginLayoutParams mp = new MarginLayoutParams(getLay);
+        fme.setPadding(l, 0, 0, 0);
+        fme.requestLayout();
+        return this;
+    }
+
+    public Droptouch setHorizontalMargin(int w) {
+        fme.setPadding(w, 0, w, 0);
+        fme.requestLayout();
+        return this;
+    }
+
     public Droptouch setButtonFace(int resId) {
         main.setBackgroundResource(resId);
         return this;
@@ -102,10 +141,6 @@ public class Droptouch extends LinearLayout {
         }
     };
 
-    public void setClickListener(final OnClickListener ls) {
-        tp = ls;
-        main.setOnClickListener(ls);
-    }
 
     public TextView getTextView() {
         return tv;
@@ -114,6 +149,7 @@ public class Droptouch extends LinearLayout {
     public Droptouch setLabel(String s) {
         label = s;
         tv.setText(label);
+        tv.requestLayout();
         return this;
     }
 
