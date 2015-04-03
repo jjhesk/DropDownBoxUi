@@ -17,6 +17,7 @@
             android:layout_height="match_parent" />-->
 
     <com.neopixl.pixlui.components.textview.TextView
+        android:layout_marginLeft="7dp"
         android:textColor="@color/box_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -26,10 +27,10 @@
         pixlui:clearclipboardcontent="true" />
     <!-- pixlui:typeface="GearedSlab.ttf"-->
     <com.neopixl.pixlui.components.imageview.ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="10dp"
         android:layout_height="wrap_content"
         android:src="@drawable/dropdown_menu_arrow"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:layout_centerVertical="true"
         android:layout_marginRight="7dp"
         android:layout_marginLeft="7dp"

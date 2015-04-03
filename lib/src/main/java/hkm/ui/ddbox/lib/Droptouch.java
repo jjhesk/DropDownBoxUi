@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -49,6 +50,7 @@ public class Droptouch extends LinearLayout {
     }
 
     private Button button;
+    private float density;
 
     /**
      * initialization
@@ -62,10 +64,29 @@ public class Droptouch extends LinearLayout {
         fme = (RelativeLayout) child.getChildAt(0);
         tv = (TextView) fme.getChildAt(0);
         tv.setId(vId);
+        density = getContext().getResources().getDisplayMetrics().density;
         // button = ((Button) fme.getChildAt(0));
         //.setOnClickListener(tp);
     }
 
+    public View getSpaceDimenId(int resId) {
+        float dp = getContext().getResources().getDimension(resId);
+        return prepareSpace((int) dp);
+    }
+
+    public View getSpace(int dp) {
+        return prepareSpace((int) (dp * density));
+    }
+
+    private View prepareSpace(int dp) {
+
+        LinearLayout.LayoutParams separator = new LinearLayout.LayoutParams(dp, ViewGroup.LayoutParams.MATCH_PARENT);
+        //border set
+        View borderVertical = new View(getContext());
+        borderVertical.setLayoutParams(separator);
+
+        return borderVertical;
+    }
 
     public void setTag(int n) {
         fme.setTag(n);
