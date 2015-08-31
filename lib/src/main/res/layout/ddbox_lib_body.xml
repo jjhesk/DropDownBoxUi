@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/button_face"
-    android:layout_height="match_parent"
+<com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:padding="2dp"
-    android:clickable="true">
+    ripple:rv_type="rectangle">
 
-    <!-- <Button
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:background="@drawable/hb_empty" />-->
-    <!--
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />-->
-
-    <com.neopixl.pixlui.components.textview.TextView
-        android:layout_marginLeft="7dp"
-        android:textColor="@color/box_text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@id/box_touch_area"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/demo"
-        pixlui:copyandpaste="false"
-        android:gravity="center_vertical"
-        pixlui:clearclipboardcontent="true" />
-    <!-- pixlui:typeface="GearedSlab.ttf"-->
-    <com.neopixl.pixlui.components.imageview.ImageView
-        android:layout_width="10dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/dropdown_menu_arrow"
-        android:scaleType="fitXY"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_alignParentRight="true" />
-</RelativeLayout>
+        android:background="@drawable/button_face"
+        android:clickable="true">
+
+        <com.neopixl.pixlui.components.textview.TextView
+            android:id="@id/box_ui_text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="7dp"
+            android:layout_toLeftOf="@id/box_ui_triangles"
+            android:gravity="center_vertical"
+            android:text="@string/demo"
+            android:textColor="@color/box_text"
+            pixlui:clearclipboardcontent="true"
+            pixlui:copyandpaste="false" />
+        <!-- pixlui:typeface="GearedSlab.ttf"-->
+        <com.neopixl.pixlui.components.imageview.ImageView
+            android:id="@id/box_ui_triangles"
+            android:layout_width="7dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/triangles" />
+    </RelativeLayout>
+</com.andexert.library.RippleView>

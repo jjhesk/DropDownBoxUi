@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="box_ui_text_id" type="id" />
+    <item name="box_ui_triangles" type="id" />
+    <item name="box_touch_area" type="id" />
+</resources>

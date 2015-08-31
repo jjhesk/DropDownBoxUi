@@ -28,11 +28,17 @@ public class Droptouch extends LinearLayout {
     private int vId;
     private TextView tv;
     private LinearLayout child, main;
+    private View mainlayout;
     private RelativeLayout fme;
+    private ViewGroup.LayoutParams totalWidth;
     private int pops_presentation;
     private int height;
     private int width;
     private int width_banner_text;
+    public static String TAG = "DropTouch";
+    private int weight_now;
+    private int sum;
+    private Point size;
 
     public Droptouch(Context context) {
         super(context);
@@ -59,33 +65,10 @@ public class Droptouch extends LinearLayout {
     private void init() {
         vId = getRootView().generateViewId();
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        child = (LinearLayout) inflater.inflate(R.layout.ddbox_lib_body, this, true);
-        //main = (LinearLayout) child.getChildAt(0);
-        fme = (RelativeLayout) child.getChildAt(0);
-        tv = (TextView) fme.getChildAt(0);
-        tv.setId(vId);
+        mainlayout = (View) inflater.inflate(R.layout.ddbox_lib_body, this, true);
+        fme = (RelativeLayout) mainlayout.findViewById(R.id.box_touch_area);
+        tv = (TextView) mainlayout.findViewById(R.id.box_ui_text_id);
         density = getContext().getResources().getDisplayMetrics().density;
-        // button = ((Button) fme.getChildAt(0));
-        //.setOnClickListener(tp);
-    }
-
-    public View getSpaceDimenId(int resId) {
-        float dp = getContext().getResources().getDimension(resId);
-        return prepareSpace((int) dp);
-    }
-
-    public View getSpace(int dp) {
-        return prepareSpace((int) (dp * density));
-    }
-
-    private View prepareSpace(int dp) {
-
-        LinearLayout.LayoutParams separator = new LinearLayout.LayoutParams(dp, ViewGroup.LayoutParams.MATCH_PARENT);
-        //border set
-        View borderVertical = new View(getContext());
-        borderVertical.setLayoutParams(separator);
-
-        return borderVertical;
     }
 
     public void setTag(int n) {
@@ -102,11 +85,6 @@ public class Droptouch extends LinearLayout {
         fme.setOnClickListener(listener);
     }
 
-    public static String TAG = "DropTouch";
-    private int weight_now;
-    private int sum;
-    private Point size;
-
     public Droptouch initPortionCalculation(Activity act) {
         Display display = act.getWindowManager().getDefaultDisplay();
         size = new Point();
@@ -114,18 +92,14 @@ public class Droptouch extends LinearLayout {
         return this;
     }
 
-    public Droptouch setPortion(int factor, int sum) {
-        if (size != null) {
-            float f = (float) factor / (float) sum * (float) size.x;
-            setWidthPixel((int) (f - 1));
-        } else {
-            Log.e(TAG, "size is not yet set");
-        }
+    public Droptouch setPortion(float factor, int sum) {
+        float f = (float) factor * (float) sum;
+        setWidthPixel((int) (f - 1));
         return this;
     }
 
     public Droptouch setPortionAuto(float factor) {
-        setLayoutParams(getParamWeight(factor));
+        setLayoutParams(ViewUtils.getParamWeight(factor));
         return this;
     }
 
@@ -174,14 +148,20 @@ public class Droptouch extends LinearLayout {
         return this;
     }
 
+    public Droptouch setWidthPixel(float w) {
+        setLayoutParams(ViewUtils.getParamsL((int) w));
+        Log.d(TAG, w + "");
+        return this;
+    }
+
     public Droptouch setWidthPixel(int w) {
-        setLayoutParams(getParamsL(w));
+        setLayoutParams(ViewUtils.getParamsL(w));
         Log.d(TAG, w + "");
         return this;
     }
 
     public Droptouch setWidthHardCode(float width) {
-        setLayoutParams(getParamsL((int) ViewUtils.dipToPixels(getContext(), width)));
+        setLayoutParams(ViewUtils.getParamsL((int) ViewUtils.dipToPixels(getContext(), width)));
         Log.d(TAG, width + "");
         return this;
     }
@@ -195,16 +175,5 @@ public class Droptouch extends LinearLayout {
         return vId;
     }
 
-    private RelativeLayout.LayoutParams getParamsR(int h) {
-        return new RelativeLayout.LayoutParams(h, -2);
-    }
-
-    private LinearLayout.LayoutParams getParamsL(int h) {
-        return new LinearLayout.LayoutParams(h, -2);
-    }
-
-    private LinearLayout.LayoutParams getParamWeight(float weight) {
-        return new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, weight);
-    }
 
 }
