@@ -12,13 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.neopixl.pixlui.components.textview.TextView;
 
-import java.util.Objects;
+import hkm.ui.ddbox.lib.data.ViewUtils;
 
 /**
  * Created by hesk on 3/23/15.

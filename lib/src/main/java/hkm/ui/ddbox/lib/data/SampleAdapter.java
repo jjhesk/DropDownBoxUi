@@ -5,13 +5,11 @@ package hkm.ui.ddbox.lib.data;
  */
 
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -26,24 +24,24 @@ public class SampleAdapter extends Adapter<SampleAdapter.SampleViewHolder> {
     private List<String> items1 = new ArrayList<>();
     private List<ProductGroupContainer> items2 = new ArrayList<>();
 
-    private int itemLayoutRes;
+   // private int itemLayoutRes;
     private boolean isStaggered;
 
     public SampleAdapter(String[] items, boolean isStaggered) {
         this.items1 = Arrays.asList(items);
-        this.itemLayoutRes = R.layout.item;
+    //    this.itemLayoutRes = R.layout.item;
         this.isStaggered = isStaggered;
     }
 
     public SampleAdapter(List<String> items) {
         this.items1 = items;
-        this.itemLayoutRes = R.layout.item;
+       // this.itemLayoutRes = R.layout.item;
         this.isStaggered = false;
     }
 
     public SampleAdapter(List<ProductGroupContainer> items, boolean isStaggered) {
         this.items2 = items;
-        this.itemLayoutRes = R.layout.item;
+       // this.itemLayoutRes = R.layout.item;
         this.isStaggered = isStaggered;
     }
 
@@ -54,7 +52,7 @@ public class SampleAdapter extends Adapter<SampleAdapter.SampleViewHolder> {
         if (isStaggered && viewType == 0) {
             view = inflater.inflate(R.layout.itemgrid, parent, false);
         } else {
-            view = inflater.inflate(itemLayoutRes, parent, false);
+            view = inflater.inflate(R.layout.item, parent, false);
         }
         return new SampleViewHolder(view);
     }
@@ -92,11 +90,20 @@ public class SampleAdapter extends Adapter<SampleAdapter.SampleViewHolder> {
     }*/
 
     public static class SampleViewHolder extends RecyclerView.ViewHolder {
-        final TextView text;
+        public final TextView text;
 
-        SampleViewHolder(View view) {
+        public SampleViewHolder(View view) {
             super(view);
-            text = (TextView) view.findViewById(R.id.alsx_text);
+            text = (TextView) view.findViewById(R.id.hkmspinnersheet_list_textview);
         }
     }
+
+   /* public static class SampleViewHolder extends RecyclerView.ViewHolder {
+        public final com.neopixl.pixlui.components.textview.TextView text;
+
+        public SampleViewHolder(View view) {
+            super(view);
+            text = (com.neopixl.pixlui.components.textview.TextView) view.findViewById(R.id.hkmspinnersheet_list_textview);
+        }
+    }*/
 }

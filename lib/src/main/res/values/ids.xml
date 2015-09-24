@@ -3,4 +3,14 @@
     <item name="box_ui_text_id" type="id" />
     <item name="box_ui_triangles" type="id" />
     <item name="box_touch_area" type="id" />
+    <item name="hkmspinnersheet_back" type="id" />
+    <item name="hkmspinnersheet_topposition" type="id" />
+    <item name="hkmspinnersheet_title" type="id" />
+    <item name="hkmspinnersheet_top" type="id" />
+    <item name="hkmspinnersheet_loader" type="id" />
+    <item name="hkmspinnersheet_confirm" type="id" />
+    <item name="hkmspinnersheet_list" type="id" />
+    <item name="hkmspinnersheet_picker" type="id" />
+    <!-- textview -->
+    <item name="hkmspinnersheet_list_textview" type="id" />
 </resources>

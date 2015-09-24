@@ -3,52 +3,42 @@ package hkm.ui.ddbox.lib;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Config;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.NumberPicker;
 
 import com.twotoasters.jazzylistview.JazzyHelper;
-import com.twotoasters.jazzylistview.JazzyListView;
-import com.twotoasters.jazzylistview.effects.SlideInEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
 
-import hkm.ui.ddbox.lib.data.LiAdapter;
+import hkm.ui.ddbox.lib.bottomsheet.BottomSheetBase;
+import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
+import hkm.ui.ddbox.lib.bottomsheet.onCallBackSimple;
 import hkm.ui.ddbox.lib.data.ProductGroupContainer;
 import hkm.ui.ddbox.lib.data.RecyclerItemClickListener;
 import hkm.ui.ddbox.lib.data.SampleAdapter;
-import hkm.ui.ddbox.lib.data.SizeAdapter;
+import hkm.ui.ddbox.lib.data.ViewUtils;
 
 /**
  * Created by hesk on 31/8/15.
  */
-public class SelectionSpinner implements View.OnClickListener {
+public class SelectionSpinner extends onCallBackSimple implements View.OnClickListener {
 
     private boolean instocksize = true, instockcolor = true;
     private int chk_var = 0, chk_size = 0, chk_qty = 0;
@@ -70,15 +60,50 @@ public class SelectionSpinner implements View.OnClickListener {
     private int full_container_width;
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
     private int mCurrentTransitionEffect = JazzyHelper.HELIX;
+    private BottomSheetBase numberpicker, listpicker;
 
-    enum supporttype {
-        VARIANT, SIZE, QTY
+    private supporttype current_choosing_type = supporttype.NONE;
+
+    private enum supporttype {
+        VARIANT, COLOR, SIZE, QTY, NONE
     }
 
-    public SelectionSpinner(final Activity act, @IdRes int row_layout) {
-        container1 = (LinearLayout) act.findViewById(row_layout);
+    public SelectionSpinner(final Activity act, @IdRes int container_Id) {
+        container1 = (LinearLayout) act.findViewById(container_Id);
         full_container_width = container1.getMeasuredWidth();     //0
         mcontext = act;
+    }
+
+    public SelectionSpinner setCustomNumberPicker(BottomSheetBase picker) {
+        numberpicker = picker;
+        numberpicker.setRenderCallback(this);
+        return this;
+    }
+
+    public SelectionSpinner setCustomListPicker(BottomSheetBase picker) {
+        listpicker = picker;
+        listpicker.setRenderCallback(this);
+        return this;
+    }
+
+    public SelectionSpinner addGroupProducts(List<ProductGroupContainer> list) {
+        varients = list;
+        return this;
+    }
+
+    public SelectionSpinner addSizeGroup(ArrayList<String> list) {
+        sizelist = list;
+        return this;
+    }
+
+    public void init() {
+        refreshSpinner();
+        renderSelectionOrder(null);
+        setQty("1");
+        //add_bag.setEnabled(false);
+        //  if (container1.getVisibility() != View.GONE || container1.getVisibility() != View.INVISIBLE)
+        //     container1.requestLayout();
+        container1.requestLayout();
     }
 
     private void addSpace(@DimenRes int resDimension) {
@@ -96,12 +121,6 @@ public class SelectionSpinner implements View.OnClickListener {
         dt.setOnClickListener(this);
         listopt.add(dt);
         container1.addView(dt);
-    }
-
-
-    public SelectionSpinner addGroupProducts(List<ProductGroupContainer> list) {
-        varients = list;
-        return this;
     }
 
 
@@ -189,15 +208,6 @@ public class SelectionSpinner implements View.OnClickListener {
         }
     }
 
-    public void init() {
-        refreshSpinner();
-        renderSelectionOrder(null);
-        setQty("1");
-        //add_bag.setEnabled(false);
-        //  if (container1.getVisibility() != View.GONE || container1.getVisibility() != View.INVISIBLE)
-        //     container1.requestLayout();
-        container1.requestLayout();
-    }
 
     public boolean foundSize() {
         return chk_size != -1;
@@ -208,42 +218,7 @@ public class SelectionSpinner implements View.OnClickListener {
         //add_bag.setEnabled(instocksize && instockcolor);
     }
 
-    public SelectionSpinner addSizeGroup(ArrayList<String> list) {
-        sizelist = list;
-        return this;
-    }
 
-    /* public boolean setOption(String set_value, int selected_pos, int kind) {
-         String search = "";
-
-         if (T_SIZE == kind) {
-             search = size[selected_pos];
-         } else if (T_COLOR == kind) {
-             //  search = color[selected_pos];
-             setColor(selected_pos);
-             return true;
-         }
-
-         for (final Variant t : variances) {
-             final String r = t.getMetaValueFromType() + t.stock_logic_configuration();
-             if (search.equalsIgnoreCase(r)) {
-                 choice_of_variance = t.getId();
-                 if (T_SIZE == kind) {
-                     instocksize = t.instock();
-                     setSize(set_value);
-                     set_value_option();
-                     return true;
-                 } else if (T_COLOR == kind) {
-                     *//*instockcolor = t.instock();
-                    setColor(color[selected_pos]);
-                    set_value_option();*//*
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-*/
     public int theVarianceChoice() {
         return choice_of_variance;
     }
@@ -251,7 +226,7 @@ public class SelectionSpinner implements View.OnClickListener {
     /**
      * to get the current number of item that selected.
      *
-     * @return
+     * @return the number
      */
     public int theQtyChoice() {
         return choice_of_quantity;
@@ -263,23 +238,20 @@ public class SelectionSpinner implements View.OnClickListener {
         return this;
     }
 
-    /**
-     * the special arrangement to refresh this page with a special url.
-     *
-     * @param positionOfItemSelected
-     * @return
-     */
-    public SelectionSpinner setColor(int positionOfItemSelected) {
-        //  ProductGroupContainer j = color_options.get(positionOfItemSelected);
-        //   mcc.from_direct_url(j.getHref());
-
-
-        return this;
+    public static List<String> containerToList(List<ProductGroupContainer> container) {
+        final List<String> list = new ArrayList<>();
+        final Iterator<ProductGroupContainer> i = container.iterator();
+        while (i.hasNext()) {
+            ProductGroupContainer group = i.next();
+            list.add(group.getTitle());
+        }
+        return list;
     }
 
+
     /**
-     * @param t
-     * @return
+     * @param t the selection in color
+     * @return the return in this
      */
     public SelectionSpinner setColor(String t) {
         Droptouch f = findByTag(T_COLOR);
@@ -292,9 +264,9 @@ public class SelectionSpinner implements View.OnClickListener {
         c.setLabel("Qty: " + t);
         choice_of_quantity = Integer.parseInt(t);
         if (sizelist.size() > 0 && !instocksize) {
-            //   add_bag.setEnabled(false);
+            //add_bag.setEnabled(false);
         } else if (varients.size() > 0 && !instockcolor) {
-            //   add_bag.setEnabled(false);
+            //add_bag.setEnabled(false);
         }
         return this;
     }
@@ -304,9 +276,9 @@ public class SelectionSpinner implements View.OnClickListener {
         c.setLabel("Qty: " + t);
         choice_of_quantity = t;
         if (sizelist.size() > 0 && !instocksize) {
-            //   add_bag.setEnabled(false);
+            //add_bag.setEnabled(false);
         } else if (varients.size() > 0 && !instockcolor) {
-            //    add_bag.setEnabled(false);
+            //add_bag.setEnabled(false);
         }
         return this;
     }
@@ -330,25 +302,57 @@ public class SelectionSpinner implements View.OnClickListener {
     public void onClick(View v) {
         switch ((int) v.getTag()) {
             case T_COLOR:
-                if (varients.size() > 0) {
-                    // showListChoices("Color", varients, T_COLOR);
-                    Log.d("showlistoptions", "Color here to start");
-                    normalListDialog("Color", varients);
-                }
+                Log.d("showlistoptions", "Color here to start");
+                normalListDialog("Color", varients);
                 break;
 
             case T_SIZE:
-                if (sizelist.size() > 0) {
-                    //  showListChoices("Size", sizelist, T_SIZE);
-                    Log.d("showlistoptions", "Size here to start");
-                    sizeListDialog("Size dialog", sizelist);
-                }
+                Log.d("showlistoptions", "Size here to start");
+                sizeListDialog("Size dialog", sizelist);
                 break;
 
             case T_QTY:
-                if (qty != null)
-                    showDialogPickerNumber();
+                showDialogPickerNumber();
                 break;
+        }
+    }
+
+    public static final int SELECT_RETURNABLE = -2439;
+    public static final String LIST = "thelistoptions";
+
+    /**
+     * shows the number picker dialog at the screen
+     */
+    private void sizeListDialog(String title, final List<String> list) {
+        if (list.size() == 0) return;
+        current_choosing_type = supporttype.SIZE;
+        if (listpicker == null) {
+            defaultsizeListDialog(title, list);
+        } else {
+            if (listpicker instanceof SingleStringBS) {
+                SingleStringBS dialog = (SingleStringBS) listpicker;
+                dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
+                dialog.setListData(list);
+                dialog.setTitle(title);
+            }
+        }
+    }
+
+    /**
+     * shows the number picker dialog at the screen
+     */
+    private void normalListDialog(String title, List<ProductGroupContainer> list) {
+        if (list.size() == 0) return;
+        current_choosing_type = supporttype.VARIANT;
+        if (listpicker == null) {
+            defaultnormalListDialog(title, list);
+        } else {
+            if (listpicker instanceof SingleStringBS) {
+                SingleStringBS dialog = (SingleStringBS) listpicker;
+                dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
+                dialog.setListData(containerToList(list));
+                dialog.setTitle(title);
+            }
         }
     }
 
@@ -356,30 +360,13 @@ public class SelectionSpinner implements View.OnClickListener {
      * shows the number picker dialog at the screen
      */
     private void showDialogPickerNumber() {
-        final Dialog d = new Dialog(mcontext);
-        d.setTitle("Quantity");
-        d.setContentView(R.layout.dialog_picker);
-        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
-        Button b = (Button) d.findViewById(R.id.set_process_button);
-        np.setMaxValue(99); // max value 100
-        np.setMinValue(1);   // min value 0
-        np.setWrapSelectorWheel(false);
-        /*np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.d(TAG, oldVal + " : " + newVal);
-            }
-        });*/
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "display now" + " : " + np.getValue());
-                //  tv.setText(String.valueOf(np.getValue())); //set the value to textview
-                setQty(np.getValue());
-                d.dismiss();
-            }
-        });
-        d.show();
+        if (qty == null) return;
+        current_choosing_type = supporttype.QTY;
+        if (numberpicker == null) {
+            defaultnumberpicker();
+        } else {
+            numberpicker.show(mcontext.getFragmentManager().beginTransaction(), "NumPicker");
+        }
     }
 
     /**
@@ -406,9 +393,6 @@ public class SelectionSpinner implements View.OnClickListener {
         });
         listchoices.show();
     }
-
-    public static final int SELECT_RETURNABLE = -2439;
-    public static final String LIST = "thelistoptions";
 
     /**
      * start with the new intent with the special list items
@@ -441,35 +425,57 @@ public class SelectionSpinner implements View.OnClickListener {
         }
     }
 
-    /**
-     * shows the number picker dialog at the screen
-     */
-    private void sizeListDialog(String title, final List<String> flist) {
+    private void defaultnumberpicker() {
+        //consist of the old style implementation
+        final Dialog d = new Dialog(mcontext);
+        d.setTitle("Quantity");
+        d.setContentView(R.layout.dialog_picker);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        Button b = (Button) d.findViewById(R.id.set_process_button);
+        np.setMaxValue(99); // max value 100
+        np.setMinValue(1);   // min value 0
+        np.setWrapSelectorWheel(false);
+            /*np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                @Override
+                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                    Log.d(TAG, oldVal + " : " + newVal);
+                }
+            });*/
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "display now" + " : " + np.getValue());
+                //  tv.setText(String.valueOf(np.getValue())); //set the value to textview
+                setQty(np.getValue());
+                d.dismiss();
+            }
+        });
+        d.show();
+    }
+
+    private void defaultsizeListDialog(String title, final List<String> list) {
         final Dialog d = new Dialog(mcontext);
         d.setTitle(title);
         d.setContentView(R.layout.default_selection_dialog);
-        final RecyclerView list = (RecyclerView) d.findViewById(R.id.list);
-        list.setLayoutManager(createLayoutManager(R.layout.item, false));
-        list.setHasFixedSize(true);
-        list.setAdapter(new SampleAdapter(flist));
-        list.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
+        final RecyclerView mlist = (RecyclerView) d.findViewById(R.id.list);
+        mlist.setLayoutManager(createLayoutManager(R.layout.item, false));
+        mlist.setHasFixedSize(true);
+        mlist.setAdapter(new SampleAdapter(list));
+        mlist.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 // ここで処理
-                Log.d(TAG, "display now" + " : " + flist.get(position));
-                setSize(flist.get(position));
+                Log.d(TAG, "display now" + " : " + list.get(position));
+                setSize(list.get(position));
                 d.dismiss();
             }
         }));
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        list.setOnScrollListener(jazzyScrollListener);
+        mlist.setOnScrollListener(jazzyScrollListener);
         d.show();
     }
 
-    /**
-     * shows the number picker dialog at the screen
-     */
-    private void normalListDialog(String title, List<ProductGroupContainer> flist) {
+    private void defaultnormalListDialog(String title, List<ProductGroupContainer> flist) {
         final Dialog d = new Dialog(mcontext);
         d.setTitle(title);
         d.setContentView(R.layout.default_selection_dialog);
@@ -489,10 +495,9 @@ public class SelectionSpinner implements View.OnClickListener {
 
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
         list.setOnScrollListener(jazzyScrollListener);
-
-
         d.show();
     }
+
 
     public void initInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -509,4 +514,36 @@ public class SelectionSpinner implements View.OnClickListener {
         mCurrentTransitionEffect = effect;
         jazzyScrollListener.setTransitionEffect(mCurrentTransitionEffect);
     }
+
+
+    @Override
+    public void onNumberSelected(int quantity) {
+        if (current_choosing_type == supporttype.QTY) {
+            chk_qty = quantity;
+            setQty(quantity);
+        }
+    }
+
+    @Override
+    public void onBack() {
+       /* if (current_choosing_type == supporttype.COLOR || current_choosing_type == supporttype.SIZE || current_choosing_type == supporttype.VARIANT) {
+            if (listpicker != null) listpicker.dismiss();
+        } else {
+            if (numberpicker != null) numberpicker.dismiss();
+        }*/
+    }
+
+    @Override
+    public void onSetItem(List<String> dialog, int itemPosition, String data_item) {
+        if (current_choosing_type == supporttype.COLOR) {
+        } else if (current_choosing_type == supporttype.SIZE) {
+            chk_size = itemPosition;
+            setSize(data_item);
+        } else if (current_choosing_type == supporttype.VARIANT) {
+            chk_var = itemPosition;
+            setColor(data_item);
+        }
+
+    }
+
 }

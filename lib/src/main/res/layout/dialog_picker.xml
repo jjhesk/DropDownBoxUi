@@ -10,9 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-
-        />
+        android:layout_marginRight="64dp" />
 
     <Button
         android:id="@+id/set_process_button"

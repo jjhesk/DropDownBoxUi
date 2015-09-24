@@ -2,4 +2,6 @@
 <resources>
     <dimen name="ui_box_drop_down_space">4dp</dimen>
     <dimen name="item_height">40dp</dimen>
+    <dimen name="item_bar_height">48dp</dimen>
+    <dimen name="ui_bs_dialog_height">310dp</dimen>
 </resources>

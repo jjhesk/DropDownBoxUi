@@ -5,7 +5,7 @@
 
 
     <TextView
-        android:id="@+id/alsx_text"
+        android:id="@id/hkmspinnersheet_list_textview"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
         android:gravity="center_vertical"

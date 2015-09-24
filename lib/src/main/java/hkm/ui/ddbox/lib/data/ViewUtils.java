@@ -1,4 +1,4 @@
-package hkm.ui.ddbox.lib;
+package hkm.ui.ddbox.lib.data;
 
 /**
  * Created by hesk on 3/23/15.
