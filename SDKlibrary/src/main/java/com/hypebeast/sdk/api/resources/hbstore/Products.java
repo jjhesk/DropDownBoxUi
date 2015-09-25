@@ -15,11 +15,6 @@ import retrofit.http.Query;
  */
 public interface Products {
 
-    @GET("/products/{product_identification_no}")
-    void PIDReq(
-            final @Path("product_identification_no") long product_id, final Callback<ResponseSingleProduct> result) throws ApiException;
-
-
     @GET("/categories/{catename}")
     void bycate(
             final @Path("catename") String category_name,

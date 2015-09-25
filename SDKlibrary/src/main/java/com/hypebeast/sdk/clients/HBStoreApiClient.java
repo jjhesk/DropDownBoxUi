@@ -36,7 +36,21 @@ public class HBStoreApiClient extends Client {
      * login adapter
      */
     private RestAdapter mLoginAdapter;
+    private static HBStoreApiClient static_instance;
 
+
+    public static HBStoreApiClient newInstance() {
+        return new HBStoreApiClient();
+    }
+
+    public static HBStoreApiClient getInstance() {
+        if (static_instance == null) {
+            static_instance = new HBStoreApiClient();
+            return static_instance;
+        } else {
+            return static_instance;
+        }
+    }
 
     public HBStoreApiClient() {
         super();
@@ -96,8 +110,8 @@ public class HBStoreApiClient extends Client {
         return mAdapter.create(Brand.class);
     }
 
-    public SingleProduct createRequest(String url_full_product) {
-        return fullEndpoint(url_full_product).create(SingleProduct.class);
+    public SingleProduct createRequest() {
+        return mAdapter.create(SingleProduct.class);
     }
 
     public String fromJsonToString(MobileConfig mFoundation) {

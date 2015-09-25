@@ -26,14 +26,12 @@
             android:gravity="left|center_vertical"
             android:textSize="20sp" />
 
-
         <ProgressBar
             android:id="@id/hkmspinnersheet_loader"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@id/hkmspinnersheet_list"

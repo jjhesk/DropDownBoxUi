@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by hesk on 2/23/15.
  */
 public class VariantItem {
-    enum VType {
+    public enum VType {
         Size,
         Color
     }

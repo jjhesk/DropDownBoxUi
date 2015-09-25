@@ -26,6 +26,7 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
     private TextView mTextview;
     private TintImageView mback;
+    private String mTitle;
 
     private RecyclerView.LayoutManager createLayoutManager(int itemLayoutRes, boolean isStaggered) {
         if (itemLayoutRes == R.layout.item) {
@@ -49,7 +50,10 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
         mRecyclerView.setOnScrollListener(jazzyScrollListener);
         mTextview = (TextView) root.findViewById(R.id.hkmspinnersheet_title);
-        mTextview.setText(getArguments().getString(DIALOG_TITLE, ""));
+        if (getArguments().getString(DIALOG_TITLE, "").equalsIgnoreCase("") && mTitle != null) {
+            mTextview.setText(mTitle);
+        } else
+            mTextview.setText(getArguments().getString(DIALOG_TITLE, ""));
         mback = (TintImageView) root.findViewById(R.id.hkmspinnersheet_back);
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +69,11 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
     }
 
     public void setTitle(String title) {
-        mTextview.setText(title);
+        if (mTextview != null)
+            mTextview.setText(title);
+        else {
+            mTitle = title;
+        }
     }
 
     @LayoutRes

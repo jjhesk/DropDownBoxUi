@@ -54,6 +54,23 @@ public class HTEditorialClient extends Client {
     public static final String ISO_FORMAT5 = "yyyy-MM-dd'T'HH:mm:ssZ";
     private hTrak interfaceHTrak;
 
+    private static HTEditorialClient static_instance;
+
+
+    public static HTEditorialClient newInstance() {
+        return new HTEditorialClient();
+    }
+
+    public static HTEditorialClient getInstance() {
+        if (static_instance == null) {
+            static_instance = new HTEditorialClient();
+            return static_instance;
+        } else {
+            return static_instance;
+        }
+    }
+
+
     @Override
     protected void registerAdapter() {
         mAdapter = new RestAdapter.Builder()

@@ -34,6 +34,24 @@ public class HBEditorialClient extends Client {
      */
     private RestAdapter mLoginAdapter;
 
+
+    private static HBEditorialClient static_instance;
+
+
+    public static HBEditorialClient newInstance() {
+        return new HBEditorialClient();
+    }
+
+    public static HBEditorialClient getInstance() {
+        if (static_instance == null) {
+            static_instance = new HBEditorialClient();
+            return static_instance;
+        } else {
+            return static_instance;
+        }
+    }
+
+
     public HBEditorialClient() {
         super();
     }

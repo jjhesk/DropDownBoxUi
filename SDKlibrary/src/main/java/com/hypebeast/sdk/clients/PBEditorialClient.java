@@ -40,6 +40,23 @@ public class PBEditorialClient extends Client {
     public static final String ISO_FORMAT4 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ISO_FORMAT5 = "yyyy-MM-dd'T'HH:mm:ssZ";
 
+
+    private static PBEditorialClient static_instance;
+
+
+    public static PBEditorialClient newInstance() {
+        return new PBEditorialClient();
+    }
+
+    public static PBEditorialClient getInstance() {
+        if (static_instance == null) {
+            static_instance = new PBEditorialClient();
+            return static_instance;
+        } else {
+            return static_instance;
+        }
+    }
+
     @Override
     protected void registerAdapter() {
         mAdapter = new RestAdapter.Builder()

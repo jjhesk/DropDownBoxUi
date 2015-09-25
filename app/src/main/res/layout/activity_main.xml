@@ -19,18 +19,25 @@
     <Button
         android:id="@+id/button_redraw"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height"
+        android:layout_height="@dimen/ui_button_height"
         android:layout_below="@id/selection_holder"
         android:gravity="center_horizontal"
         android:text="redraw" />
 
-
     <Button
         android:id="@+id/button_error"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height"
+        android:layout_height="@dimen/ui_button_height"
         android:layout_below="@id/button_redraw"
         android:gravity="center_horizontal"
         android:text="trigger error" />
+
+    <Button
+        android:id="@+id/button_addcart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ui_button_height"
+        android:layout_below="@id/button_error"
+        android:gravity="center_horizontal"
+        android:text="Add Cart" />
 
 </RelativeLayout>

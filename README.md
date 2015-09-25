@@ -4,34 +4,23 @@ A custom made drop down box Ui for handy use.
 
 Version
 ========
-Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready. X.X.X to be the lastest version possible you can fidn from the release log.
-```gradle
-dependencies {
-	        compile 'com.github.jjhesk:DropDownBoxUi:vX.X.X'
-}
-```
+Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready. X.X.X to be the lastest version possible you can find from the release log.
+
 
 buildscript
 ```gradle
 
 repositories {
-	    maven {
-	        url "https://jitpack.io"
-	    }
-	}
+	    maven { url 'http://dl.bintray.com/jjhesk/maven/' }
+}
 
+dependencies {
+   compile 'com.hkm.dropboxui:dropdownuilib:0.6.6'
+}
 ```
 
 Apps using DropTouch
 =============
-
-
-
-Feel free to shoot me an email if your app is using it
-
-Developed By
-=============
-Hesk <jobhesk@gmail.com>
 
 
 Sample Scripts

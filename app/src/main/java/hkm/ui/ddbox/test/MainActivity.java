@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private float[] por2 = {0.6f, 0.4f};
     private float sum = 1f;
     private String[] labels = {"cate", "size", "qty"};
-    private Button redraw, triggererror;
+    private Button redraw, triggererror, button_addcart;
     private SelectionHelper wrapped_object;
 
     @Override
@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         redraw = (Button) findViewById(R.id.button_redraw);
         triggererror = (Button) findViewById(R.id.button_error);
-        wrapped_object = new SelectionHelper(this, R.id.selection_holder);
+        button_addcart = (Button) findViewById(R.id.button_addcart);
+        wrapped_object = new SelectionHelper(this, R.id.selection_holder, 49910);
         redraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //  n.init();
+            }
+        });
+        button_addcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wrapped_object.confirm();
             }
         });
     }

@@ -19,7 +19,7 @@ public class Variant {
     @SerializedName("on_hold")
     private int on_hold;
 
-    enum Type {
+    public enum Type {
         OUT_OF_STOCK,
         LAST_ONE,
         NORMAL
@@ -31,8 +31,8 @@ public class Variant {
     private String option_name;
     private String stock_config;
     private boolean instock;
-    private int stock_status;
-
+    private int stock_status = 0;
+    private int stock_delta = 0;
     public Type stockStatus;
     public VariantItem.VType variant_type;
     public static int OUT_OF_STOCK = -1, LAST_ONE = 1, NORMAL = 0;
@@ -53,13 +53,13 @@ public class Variant {
     public Variant init() {
         variant_type_presentation = options.get(0).option.presentation;
         variant_type = options.get(0).option.name;
-
-        final int delta = on_hand - on_hold;
-        if (delta == 1) {
+        option_name = options.get(0).value;
+        stock_delta = on_hand - on_hold;
+        if (stock_delta == 1) {
             stock_config = " (Last One Left)";
             stock_status = LAST_ONE;
             stockStatus = Type.LAST_ONE;
-        } else if (delta == 0) {
+        } else if (stock_delta == 0) {
             stock_config = " (Out of Stock)";
             stock_status = OUT_OF_STOCK;
             stockStatus = Type.OUT_OF_STOCK;
@@ -68,7 +68,7 @@ public class Variant {
             stock_status = NORMAL;
             stockStatus = Type.NORMAL;
         }
-        instock = delta > 0;
+        instock = stock_delta > 0;
 
         return this;
     }
@@ -99,5 +99,9 @@ public class Variant {
 
     public boolean instock() {
         return stock_status == LAST_ONE || stock_status == NORMAL;
+    }
+
+    public int stock_available() {
+        return stock_delta;
     }
 }

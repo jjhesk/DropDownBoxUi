@@ -27,4 +27,5 @@ public class onCallBackSimple implements onCallBack {
     public void onSetItem(List<String> dialog, int itemPosition, String data_item) {
 
     }
+
 }

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="dropdownuilib-0.6.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hkm.dropboxui/dropdownuilib/0.6.6/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hkm.dropboxui/dropdownuilib/0.6.6/jars/libs/pixlui-1-0-5.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hkm.dropboxui/dropdownuilib/0.6.6/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

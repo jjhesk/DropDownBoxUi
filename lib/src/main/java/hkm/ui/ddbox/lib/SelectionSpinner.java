@@ -30,6 +30,7 @@ import java.util.List;
 import hkm.ui.ddbox.lib.bottomsheet.BottomSheetBase;
 import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
 import hkm.ui.ddbox.lib.bottomsheet.onCallBackSimple;
+import hkm.ui.ddbox.lib.bottomsheet.spinnerCallBack;
 import hkm.ui.ddbox.lib.data.ProductGroupContainer;
 import hkm.ui.ddbox.lib.data.RecyclerItemClickListener;
 import hkm.ui.ddbox.lib.data.SampleAdapter;
@@ -61,7 +62,17 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
     private int mCurrentTransitionEffect = JazzyHelper.HELIX;
     private BottomSheetBase numberpicker, listpicker;
+    private spinnerCallBack cb = new spinnerCallBack() {
+        @Override
+        public void onSelectRelatedProduct(int group, int quantity) {
 
+        }
+
+        @Override
+        public void onSubmission(int group, int size, int quantity) {
+
+        }
+    };
     private supporttype current_choosing_type = supporttype.NONE;
 
     private enum supporttype {
@@ -486,13 +497,11 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         list.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // ここで処理
                 Log.d(TAG, "display now" + " : " + varients.get(position).getHref());
                 setColor(varients.get(position).getTitle());
                 d.dismiss();
             }
         }));
-
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
         list.setOnScrollListener(jazzyScrollListener);
         d.show();
@@ -542,8 +551,15 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         } else if (current_choosing_type == supporttype.VARIANT) {
             chk_var = itemPosition;
             setColor(data_item);
+            cb.onSelectRelatedProduct(chk_var, chk_qty);
         }
-
     }
 
+    public void triggerAddBag() {
+        cb.onSubmission(chk_var, chk_size, chk_qty);
+    }
+
+    public void setSubmissionCallBack(spinnerCallBack cb) {
+        this.cb = cb;
+    }
 }

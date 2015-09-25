@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Product {
     @SerializedName("id")
-    private int id;
+    public long product_id;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
@@ -47,9 +47,6 @@ public class Product {
             "}\n" +
             "</style>";
 
-    public int getId() {
-        return id;
-    }
 
     public List<Image> get_product_images() {
         return images;
@@ -66,6 +63,7 @@ public class Product {
     public String price_sale() {
         return "";
     }
+
     public String price() {
         return price(String.valueOf((float) price / (float) 100));
     }
@@ -91,7 +89,6 @@ public class Product {
     public String get_desc() {
         return description;
     }
-
 
 
     public boolean hasVariance() {
