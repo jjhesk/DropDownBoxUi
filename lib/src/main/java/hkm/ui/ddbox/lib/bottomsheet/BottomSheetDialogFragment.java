@@ -48,7 +48,7 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), this));
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        mRecyclerView.setOnScrollListener(jazzyScrollListener);
+        mRecyclerView.addOnScrollListener(jazzyScrollListener);
         mTextview = (TextView) root.findViewById(R.id.hkmspinnersheet_title);
         if (getArguments().getString(DIALOG_TITLE, "").equalsIgnoreCase("") && mTitle != null) {
             mTextview.setText(mTitle);

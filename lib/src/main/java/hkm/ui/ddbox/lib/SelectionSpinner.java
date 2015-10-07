@@ -111,6 +111,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         refreshSpinner();
         renderSelectionOrder(null);
         setQty("1");
+        setQty(1);
         //add_bag.setEnabled(false);
         //  if (container1.getVisibility() != View.GONE || container1.getVisibility() != View.INVISIBLE)
         //     container1.requestLayout();
@@ -127,7 +128,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         dt.setLabel(label);
         dt.setTag(tag_integer);
         if (portion < 1.0f) {
-            dt.setPortion(portion, ViewUtils.getWidth(mcontext) - 10);
+            dt.setPortion(portion, ViewUtils.getWidth(mcontext));
         }
         dt.setOnClickListener(this);
         listopt.add(dt);
@@ -482,7 +483,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
             }
         }));
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        mlist.setOnScrollListener(jazzyScrollListener);
+        mlist.addOnScrollListener(jazzyScrollListener);
         d.show();
     }
 
@@ -503,7 +504,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
             }
         }));
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        list.setOnScrollListener(jazzyScrollListener);
+        list.addOnScrollListener(jazzyScrollListener);
         d.show();
     }
 

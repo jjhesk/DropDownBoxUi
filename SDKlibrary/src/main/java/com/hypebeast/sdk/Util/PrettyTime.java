@@ -1,7 +1,5 @@
 package com.hypebeast.sdk.Util;
 
-import com.hypebeast.sdk.clients.PBEditorialClient;
-
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;

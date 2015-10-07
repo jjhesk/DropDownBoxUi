@@ -2,4 +2,5 @@
 <resources>
     <color name="stroke_color_box">#ffaaaaaa</color>
     <color name="box_text">#444444</color>
+    <color name="rippleCole">#cbcbcb</color>
 </resources>

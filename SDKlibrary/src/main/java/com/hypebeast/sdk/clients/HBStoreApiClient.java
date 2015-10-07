@@ -7,7 +7,6 @@ import com.hypebeast.sdk.Constants;
 import com.hypebeast.sdk.api.gson.GsonFactory;
 import com.hypebeast.sdk.api.gson.MissingCharacterConversion;
 import com.hypebeast.sdk.api.gson.RealmExclusion;
-import com.hypebeast.sdk.api.model.hbeditorial.Foundation;
 import com.hypebeast.sdk.api.model.hypebeaststore.MobileConfig;
 import com.hypebeast.sdk.api.resources.hbstore.Brand;
 import com.hypebeast.sdk.api.resources.hbstore.Overhead;

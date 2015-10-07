@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
+import com.andexert.library.RippleView;
 import com.neopixl.pixlui.components.textview.TextView;
 
 import hkm.ui.ddbox.lib.data.ViewUtils;
@@ -28,7 +28,7 @@ public class Droptouch extends LinearLayout {
     private TextView tv;
     private LinearLayout child, main;
     private View mainlayout;
-    private RelativeLayout fme;
+    private RippleView fme;
     private ViewGroup.LayoutParams totalWidth;
     private int pops_presentation;
     private int height;
@@ -38,6 +38,8 @@ public class Droptouch extends LinearLayout {
     private int weight_now;
     private int sum;
     private Point size;
+    private Button button;
+    private float density;
 
     public Droptouch(Context context) {
         super(context);
@@ -54,8 +56,6 @@ public class Droptouch extends LinearLayout {
         init();
     }
 
-    private Button button;
-    private float density;
 
     /**
      * initialization
@@ -64,8 +64,8 @@ public class Droptouch extends LinearLayout {
     private void init() {
         vId = getRootView().generateViewId();
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mainlayout = (View) inflater.inflate(R.layout.ddbox_lib_body, this, true);
-        fme = (RelativeLayout) mainlayout.findViewById(R.id.box_touch_area);
+        mainlayout = (View) inflater.inflate(R.layout.framework_body, this, true);
+        fme = (RippleView) mainlayout.findViewById(R.id.box_touch_area);
         tv = (TextView) mainlayout.findViewById(R.id.box_ui_text_id);
         density = getContext().getResources().getDisplayMetrics().density;
     }
@@ -173,6 +173,4 @@ public class Droptouch extends LinearLayout {
     private int gettvid() {
         return vId;
     }
-
-
 }

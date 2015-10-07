@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
     xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="2dp"
-    ripple:rv_type="rectangle">
+    android:background="@drawable/button_face"
+    android:padding="0dp">
 
-    <RelativeLayout
+    <com.andexert.library.RippleView
         android:id="@id/box_touch_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_face"
-        android:clickable="true">
+        android:clickable="true"
+        ripple:rv_centered="false"
+        ripple:rv_color="@color/rippleCole"
+        ripple:rv_framerate="6"
+        ripple:rv_type="simpleRipple"
+        ripple:rv_zoom="false">
 
         <com.neopixl.pixlui.components.textview.TextView
             android:id="@id/box_ui_text_id"
@@ -30,12 +34,12 @@
         <com.neopixl.pixlui.components.imageview.ImageView
             android:id="@id/box_ui_triangles"
             android:layout_width="7dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@drawable/triangles" />
-    </RelativeLayout>
-</com.andexert.library.RippleView>
+    </com.andexert.library.RippleView>
+</RelativeLayout>
