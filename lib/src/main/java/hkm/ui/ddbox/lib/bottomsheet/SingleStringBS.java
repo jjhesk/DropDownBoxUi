@@ -22,8 +22,6 @@ public class SingleStringBS extends BottomSheetDialogFragment {
         return fragment;
     }
 
-
-
     public void setListData(List<String> dataList) {
         this.dataList.clear();
         this.dataList.addAll(dataList);

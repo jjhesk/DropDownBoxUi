@@ -49,7 +49,7 @@ public class NumberPickerDialog extends BottomSheetBase {
             }
         });
 
-        mPicker.setMaxValue(99); // max value 100
+        mPicker.setMaxValue(77); // max value 100
         mPicker.setMinValue(1);   // min value 0
         mPicker.setWrapSelectorWheel(false);
         mapply.setOnClickListener(new View.OnClickListener() {

@@ -57,7 +57,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     private static int BEGINNING = 0, LAST = -1;
     private List<ProductGroupContainer> varients = new ArrayList<>();
     private ArrayList<String> sizelist = new ArrayList<>();
-    private String[] qty;
+
     private int full_container_width;
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
     private int mCurrentTransitionEffect = JazzyHelper.HELIX;
@@ -137,9 +137,6 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
 
 
     private void addQtybutton(float portion) {
-        qty = new String[]{
-                "1", "2", "3", "4", "5", "6", "7", "8", "9"
-        };
         buttonConstruct(T_QTY, "Qty", portion);
     }
 
@@ -372,7 +369,6 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
      * shows the number picker dialog at the screen
      */
     private void showDialogPickerNumber() {
-        if (qty == null) return;
         current_choosing_type = supporttype.QTY;
         if (numberpicker == null) {
             defaultnumberpicker();

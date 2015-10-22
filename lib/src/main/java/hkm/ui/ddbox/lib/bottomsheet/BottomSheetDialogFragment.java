@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.neopixl.pixlui.components.textview.TextView;
+import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.SlideInEffect;
 import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 
 import hkm.ui.ddbox.lib.R;
@@ -49,6 +51,8 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), this));
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
         mRecyclerView.addOnScrollListener(jazzyScrollListener);
+//        mRecyclerView.setLayoutTransition(new SlideInEffect());
+
         mTextview = (TextView) root.findViewById(R.id.hkmspinnersheet_title);
         if (getArguments().getString(DIALOG_TITLE, "").equalsIgnoreCase("") && mTitle != null) {
             mTextview.setText(mTitle);
