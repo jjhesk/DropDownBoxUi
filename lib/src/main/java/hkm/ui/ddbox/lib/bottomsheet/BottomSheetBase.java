@@ -1,12 +1,16 @@
 package hkm.ui.ddbox.lib.bottomsheet;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +26,7 @@ import hkm.ui.ddbox.lib.R;
  */
 public abstract class BottomSheetBase extends DialogFragment {
     public static final String MEASUREMENT_HEIGHT = "HEIGHT";
+    public static final String BACKGROUND_COLOR = "COLOR_BG";
     public static final String DIALOG_TITLE = "TITLE";
     private int mHeight;
     protected boolean isInProgress = false;
@@ -31,6 +36,32 @@ public abstract class BottomSheetBase extends DialogFragment {
 
     @LayoutRes
     protected abstract int getHiddenPanelLayout();
+/*
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Activity activity = getActivity();
+        final View content = activity.findViewById(android.R.id.content).getRootView();
+        try {
+            if (content.getWidth() > 0) {
+                Bitmap image = BlurBuilder.blur(content);
+                getDialog().getWindow().setBackgroundDrawable(new BitmapDrawable(activity.getResources(), image));
+            } else {
+                content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Bitmap image = BlurBuilder.blur(content);
+                        getDialog().getWindow().
+                                setBackgroundDrawable(new BitmapDrawable(activity.getResources(), image));
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Log.d("LOG_IMG", e.getMessage());
+        }
+    }
+*/
 
 
     @Override
@@ -47,6 +78,8 @@ public abstract class BottomSheetBase extends DialogFragment {
                 dL.setCancelable(true);
             }
         });
+
+
         return dL;
     }
 

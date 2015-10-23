@@ -8,6 +8,8 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
         versionCode getVersionCode()
         versionName project.VERSION_NAME
+     //   renderscriptTargetApi project.ANDROID_BUILD_TARGET_SDK_VERSION
+      //  renderscriptSupportModeEnabled true
     }
 
     buildTypes {

@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-   compile 'com.hkm.dropboxui:dropdownuilib:0.7.0'
+   compile 'com.hkm.dropboxui:dropdownuilib:0.7.2'
 }
 ```
 

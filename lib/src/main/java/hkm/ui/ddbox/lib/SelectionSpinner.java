@@ -81,7 +81,6 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
 
     public SelectionSpinner(final Activity act, @IdRes int container_Id) {
         container1 = (LinearLayout) act.findViewById(container_Id);
-        full_container_width = container1.getMeasuredWidth();     //0
         mcontext = act;
     }
 
@@ -108,14 +107,15 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     }
 
     public void init() {
-        refreshSpinner();
-        renderSelectionOrder(null);
-        setQty("1");
-        setQty(1);
         //add_bag.setEnabled(false);
         //  if (container1.getVisibility() != View.GONE || container1.getVisibility() != View.INVISIBLE)
         //     container1.requestLayout();
         container1.requestLayout();
+        full_container_width = container1.getWidth();
+        refreshSpinner();
+        renderSelectionOrder(null);
+        setQty("1");
+        setQty(1);
     }
 
     private void addSpace(@DimenRes int resDimension) {
@@ -128,7 +128,8 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         dt.setLabel(label);
         dt.setTag(tag_integer);
         if (portion < 1.0f) {
-            dt.setPortion(portion, ViewUtils.getWidth(mcontext));
+          //  dt.setPortion(portion, ViewUtils.getWidth(mcontext));
+            dt.setPortion(portion, full_container_width);
         }
         dt.setOnClickListener(this);
         listopt.add(dt);

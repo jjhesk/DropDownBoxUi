@@ -166,6 +166,7 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
     private SingleStringBS prepareSingleStringListBS() {
         final Bundle bloop = new Bundle();
         bloop.putInt(BottomSheetDialogFragment.MEASUREMENT_HEIGHT, (int) activity.getResources().getDimension(R.dimen.ui_bs_dialog_height));
+        bloop.putFloat(BottomSheetDialogFragment.MEASUREMENT_HEIGHT, (int) activity.getResources().getDimension(R.dimen.ui_bs_dialog_height));
         final SingleStringBS instance = SingleStringBS.newInstace(bloop);
         return instance;
     }

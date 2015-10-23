@@ -51,8 +51,7 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), this));
         jazzyScrollListener = new JazzyRecyclerViewScrollListener();
         mRecyclerView.addOnScrollListener(jazzyScrollListener);
-//        mRecyclerView.setLayoutTransition(new SlideInEffect());
-
+        //  mRecyclerView.setLayoutTransition(new SlideInEffect());
         mTextview = (TextView) root.findViewById(R.id.hkmspinnersheet_title);
         if (getArguments().getString(DIALOG_TITLE, "").equalsIgnoreCase("") && mTitle != null) {
             mTextview.setText(mTitle);
@@ -69,7 +68,6 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
                 }
             }
         });
-
     }
 
     public void setTitle(String title) {

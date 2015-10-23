@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.internal.widget.TintImageView;
 import android.util.Log;
 import android.view.View;
+import android.widget.NumberPicker;
 
 import com.neopixl.pixlui.components.textview.TextView;
 
@@ -48,7 +49,7 @@ public class NumberPickerDialog extends BottomSheetBase {
                 }
             }
         });
-
+        mPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         mPicker.setMaxValue(77); // max value 100
         mPicker.setMinValue(1);   // min value 0
         mPicker.setWrapSelectorWheel(false);

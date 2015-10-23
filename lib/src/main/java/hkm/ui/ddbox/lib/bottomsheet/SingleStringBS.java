@@ -18,7 +18,7 @@ public class SingleStringBS extends BottomSheetDialogFragment {
     public static SingleStringBS newInstace(Bundle data) {
         final SingleStringBS fragment = new SingleStringBS();
         fragment.setArguments(data);
-        fragment.setStyle(BottomSheetDialogFragment.STYLE_NO_TITLE, R.style.SlideUpDialog);
+        fragment.setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.SlideUpDialog);
         return fragment;
     }
 

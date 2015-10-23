@@ -4,22 +4,27 @@ package hkm.ui.ddbox.lib.data;
  * Created by hesk on 3/23/15.
  */
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.annotation.DimenRes;
+import android.support.annotation.IdRes;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-public class ViewUtils {
+import hkm.ui.ddbox.lib.R;
 
+public class ViewUtils {
 
 
     /* public static T getItemAt(Map<?, T> frameDescriptors, int x, int y) {
@@ -34,6 +39,33 @@ public class ViewUtils {
          return returnValue;
      }
  */
+    public static class ViewMesaureLinearLayout implements ViewTreeObserver.OnGlobalLayoutListener {
+        private final View foundView;
+        private final int resIdView;
+        public int measuredWidth = 0;
+
+        public ViewMesaureLinearLayout(View tv, @IdRes int viewId) {
+            foundView = tv;
+            resIdView = viewId;
+        }
+
+        @Override
+        public void onGlobalLayout() {
+            //Do it here
+            LinearLayout layoutGet = (LinearLayout) foundView.findViewById(resIdView);
+            LinearLayout.LayoutParams layParamsGet = (LinearLayout.LayoutParams) layoutGet.getLayoutParams();
+            measuredWidth = layParamsGet.width;
+            removeOnGlobalLayoutListener(layoutGet, this); // Assuming layoutGet is the View which you got the ViewTreeObserver from
+        }
+    }
+
+
+    @SuppressLint("NewApi")
+    public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
+        if (Build.VERSION.SDK_INT < 16)
+            v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+        else v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+    }
 
     private static void addSpace(Context ctx, LinearLayout container, @DimenRes int resDimension) {
         container.addView(ViewUtils.prepareSpace(resDimension, ctx));
