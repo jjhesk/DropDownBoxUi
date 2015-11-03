@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.hypebeast.sdk.api.gson.GsonFactory;
 import com.hypebeast.sdk.api.gson.MissingCharacterConversion;
 import com.hypebeast.sdk.api.gson.RealmExclusion;
+import com.hypebeast.sdk.api.gson.WordpressConversion;
 import com.hypebeast.sdk.api.resources.pb.pbPost;
 
 import java.util.Iterator;
@@ -80,6 +81,7 @@ public class PBEditorialClient extends Client {
                 .setExclusionStrategies(new RealmExclusion())
                 .registerTypeAdapterFactory(new GsonFactory.NullStringToEmptyAdapterFactory())
                 .registerTypeAdapter(String.class, new MissingCharacterConversion())
+                .registerTypeAdapter(String.class, new WordpressConversion())
                 .create();
     }
 

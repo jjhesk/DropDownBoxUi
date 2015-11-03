@@ -2,12 +2,15 @@ package com.hypebeast.sdk.api.model.symfony;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 
 import com.google.gson.annotations.SerializedName;
 import com.hypebeast.sdk.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmObject;
 
 /**
  * Created by hesk on 2/18/15.
@@ -16,23 +19,25 @@ public class Product {
     @SerializedName("id")
     public long product_id;
     @SerializedName("name")
-    private String name;
+    public String name;
     @SerializedName("description")
-    private String description;
+    public String description;
     @SerializedName("price")
-    private int price;
-    // @SerializedName("sale_price")
-    //  private int sale_price;
+    public int price;
+    @SerializedName("sale_price")
+    public int sale_price;
     @SerializedName("created_at")
-    private String created_at;
+    public String created_at;
     @SerializedName("updated_at")
-    private String updated_at;
+    public String updated_at;
+    @SerializedName("sold_out_at")
+    public String sold_out_at;
     @SerializedName("_links")
-    private connection _links;
+    public connection _links;
     @SerializedName("_embedded")
-    private RelatedGroups _embedded;
+    public RelatedGroups _embedded;
     @SerializedName("images")
-    private List<Image> images = new ArrayList<Image>();
+    public List<Image> images = new ArrayList<Image>();
     @SerializedName("variants")
     private List<Variant> variants = new ArrayList<Variant>();
     @SerializedName("attributes")
@@ -57,15 +62,27 @@ public class Product {
     }
 
     public String get_brand_name() {
-        return _embedded.brands.get(0).getcodename();
+        return _embedded.brands.get(0).toString();
+    }
+
+    public boolean inSaleAvailable() {
+        return sale_price > 0;
+    }
+
+    public boolean isSoldOut() {
+        return sold_out_at != null && !sold_out_at.equalsIgnoreCase("");
     }
 
     public String price_sale() {
-        return "";
+        return inSaleAvailable() ? sale_price() : "";
     }
 
     public String price() {
         return price(String.valueOf((float) price / (float) 100));
+    }
+
+    public String sale_price() {
+        return price(String.valueOf((float) sale_price / (float) 100));
     }
 
     private String price(final String p) {
@@ -90,13 +107,17 @@ public class Product {
         return description;
     }
 
-
     public boolean hasVariance() {
         return variants.size() > 1;
     }
 
     public String getBrandUrl() {
         return _links.brand.href;
+    }
+
+    public String getBrandSlug() {
+        Uri u = Uri.parse(_links.brand.href);
+        return u.getLastPathSegment();
     }
 
     public boolean matchCurrentHref(String url) {
@@ -111,6 +132,11 @@ public class Product {
             h.add(m);
         }
         return h;
+    }
+
+    public long getMasterVariantId() throws Exception {
+        if (variants.size() == 0) throw new Exception("no data found from the variance list");
+        return variants.get(0).getId();
     }
 
     public List<Attributes> getAttributes() {
@@ -128,7 +154,7 @@ public class Product {
      * @param n the input integer
      * @return the integer number.
      */
-    public int getVariantID(int n) {
+    public long getVariantID(int n) {
         return variants.get(n).getId();
     }
 }

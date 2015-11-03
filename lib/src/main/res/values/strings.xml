@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">lib</string>
-    <string name="demo">demo name</string>
+    <string name="demo">____</string>
+    <string name="quantity">Qty</string>
+    <string name="size">Size</string>
+    <string name="group">Color</string>
 </resources>

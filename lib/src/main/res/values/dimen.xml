@@ -5,4 +5,5 @@
     <dimen name="item_bar_height">48dp</dimen>
     <dimen name="ui_bs_dialog_height">310dp</dimen>
     <dimen name="ui_button_height">90dp</dimen>
+    <dimen name="hkm_drop_ui_gap">10dp</dimen>
 </resources>

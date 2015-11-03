@@ -40,4 +40,5 @@ public class ResponseProductList extends Alternative {
     public FilterGroup getfacets() {
         return filters;
     }
+
 }

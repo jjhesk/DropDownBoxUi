@@ -1,19 +1,16 @@
 package com.hypebeast.sdk.api.resources.hbstore;
 
 import com.hypebeast.sdk.api.exception.ApiException;
-import com.hypebeast.sdk.api.model.hypebeaststore.MobileConfig;
-import com.hypebeast.sdk.api.model.popbees.mobileconfig;
+import com.hypebeast.sdk.api.model.hypebeaststore.ResponseMobileOverhead;
+import com.hypebeast.sdk.api.model.symfony.Config;
 
 import retrofit.Callback;
 import retrofit.http.GET;
-import retrofit.http.Query;
 
 /**
  * Created by hesk on 10/9/15.
  */
 public interface Overhead {
-
-    @GET("/wp-json/mobile-config")
-    void mobile_config(final Callback<MobileConfig> cb) throws ApiException;
-
+    @GET("/mobile-api/v1/config.json?platform=android")
+    void mobile_config(final Callback<ResponseMobileOverhead> cb) throws ApiException;
 }

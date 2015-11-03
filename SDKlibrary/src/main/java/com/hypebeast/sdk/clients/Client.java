@@ -33,7 +33,6 @@ public abstract class Client {
             public void intercept(RequestFacade request) {
                 request.addHeader("User-Agent", get_USER_AGENT());
                 request.addHeader("Accept", "application/json");
-                request.addHeader("X-Api-Version", "2.0");
             }
         };
     }

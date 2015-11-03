@@ -13,4 +13,8 @@
     <item name="hkmspinnersheet_picker" type="id" />
     <!-- textview -->
     <item name="hkmspinnersheet_list_textview" type="id" />
+    <item name="hkm_sp_lc1" type="id" />
+    <item name="hkm_sp_lc2" type="id" />
+    <item name="hkm_sp_lc3" type="id" />
+    <item name="hkm_sp_lc4" type="id" />
 </resources>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import hkm.ui.ddbox.test.apiHelper.SelectionHelper;
+import hkm.ui.ddbox.test.apiHelper.SelectionNewHelper;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private float sum = 1f;
     private String[] labels = {"cate", "size", "qty"};
     private Button redraw, triggererror, button_addcart;
-    private SelectionHelper wrapped_object;
+    private SelectionNewHelper wrapped_object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         redraw = (Button) findViewById(R.id.button_redraw);
         triggererror = (Button) findViewById(R.id.button_error);
         button_addcart = (Button) findViewById(R.id.button_addcart);
-        wrapped_object = new SelectionHelper(this, R.id.selection_holder, 49910);
+        wrapped_object = new SelectionNewHelper(this, R.id.selection_holder, 49910);
         redraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         triggererror.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  n.init();
+                //  wrapped_object.invalidate();
             }
         });
         button_addcart.setOnClickListener(new View.OnClickListener() {

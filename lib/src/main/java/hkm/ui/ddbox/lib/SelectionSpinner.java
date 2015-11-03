@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +61,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
 
     private int full_container_width;
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
-    private int mCurrentTransitionEffect = JazzyHelper.HELIX;
+    private int mCurrentTransitionEffect = JazzyHelper.FADE;
     private BottomSheetBase numberpicker, listpicker;
     private spinnerCallBack cb = new spinnerCallBack() {
         @Override
@@ -69,7 +70,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         }
 
         @Override
-        public void onSubmission(int group, int size, int quantity) {
+        public void onSubmission(int group, final int size, int quantity) {
 
         }
     };
@@ -82,6 +83,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     public SelectionSpinner(final Activity act, @IdRes int container_Id) {
         container1 = (LinearLayout) act.findViewById(container_Id);
         mcontext = act;
+        container1.removeAllViews();
     }
 
     public SelectionSpinner setCustomNumberPicker(BottomSheetBase picker) {
@@ -128,7 +130,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         dt.setLabel(label);
         dt.setTag(tag_integer);
         if (portion < 1.0f) {
-          //  dt.setPortion(portion, ViewUtils.getWidth(mcontext));
+            //  dt.setPortion(portion, ViewUtils.getWidth(mcontext));
             dt.setPortion(portion, full_container_width);
         }
         dt.setOnClickListener(this);
@@ -153,68 +155,82 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         renderSelectionOrder(c);
     }
 
-    private void renderSelectionOrder(Configuration conf) {
-
-        if (conf == null || conf.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (varients.size() == 0 && sizelist.size() == 0) {
-                addQtybutton(setting1[0]);
-                //  container1.setVisibility(View.GONE);
-                return;
-            }
-            if (varients.size() > 0 && sizelist.size() > 0) {
-                // container1.setVisibility(View.VISIBLE);
-                buttonConstruct(T_COLOR, "Color", setting3[0]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                buttonConstruct(T_SIZE, "Size", setting3[1]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                addQtybutton(setting3[2]);
-                return;
-            }
-            if (varients.size() > 0 && sizelist.size() == 0) {
-                // container1.setVisibility(View.GONE);
-                buttonConstruct(T_COLOR, "Color", setting2[0]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                addQtybutton(setting2[1]);
-                return;
-            }
-
-            if (varients.size() == 0 && sizelist.size() > 0) {
-                //  container1.setVisibility(View.GONE);
-                buttonConstruct(T_SIZE, "Size", setting2[0]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                addQtybutton(setting2[1]);
-                return;
-            }
-
+    private boolean render_portrait() {
+        if (varients.size() == 0 && sizelist.size() == 0) {
+            addQtybutton(setting1[0]);
+            //  container1.setVisibility(View.GONE);
+            return true;
+        }
+        if (varients.size() > 0 && sizelist.size() > 0) {
+            // container1.setVisibility(View.VISIBLE);
+            buttonConstruct(T_COLOR, "Color", setting3[0]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            buttonConstruct(T_SIZE, "Size", setting3[1]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            addQtybutton(setting3[2]);
+            return true;
+        }
+        if (varients.size() > 0 && sizelist.size() == 0) {
+            // container1.setVisibility(View.GONE);
+            buttonConstruct(T_COLOR, "Color", setting2[0]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            addQtybutton(setting2[1]);
+            return true;
         }
 
-        if (conf != null && conf.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (varients.size() == 0 && sizelist.size() > 0) {
             //  container1.setVisibility(View.GONE);
-            if (varients.size() == 0 && sizelist.size() == 0) {
-                addQtybutton(setting1[0]);
-                return;
-            }
-            if (varients.size() > 0 && sizelist.size() > 0) {
-                buttonConstruct(T_COLOR, "Color", setting3[0]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                buttonConstruct(T_SIZE, "Size", setting3[1]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                addQtybutton(setting3[2]);
-                return;
-            }
-            if (varients.size() > 0 && sizelist.size() == 0) {
-                buttonConstruct(T_COLOR, "Color", setting2[0]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                addQtybutton(setting2[1]);
-                return;
-            }
+            buttonConstruct(T_SIZE, "Size", setting2[0]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            addQtybutton(setting2[1]);
+            return true;
+        }
+        return false;
+    }
 
-            if (varients.size() == 0 && sizelist.size() > 0) {
-                buttonConstruct(T_SIZE, "Size", setting2[0]);
-                addSpace(R.dimen.ui_box_drop_down_space);
-                addQtybutton(setting2[1]);
-                return;
-            }
+    private boolean render_landscape() {
+        //  container1.setVisibility(View.GONE);
+        if (varients.size() == 0 && sizelist.size() == 0) {
+            addQtybutton(setting1[0]);
+            return true;
+        }
+
+        if (varients.size() > 0 && sizelist.size() > 0) {
+            buttonConstruct(T_COLOR, "Color", setting3[0]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            buttonConstruct(T_SIZE, "Size", setting3[1]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            addQtybutton(setting3[2]);
+            return true;
+        }
+
+        if (varients.size() > 0 && sizelist.size() == 0) {
+            buttonConstruct(T_COLOR, "Color", setting2[0]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            addQtybutton(setting2[1]);
+            return true;
+        }
+
+        if (varients.size() == 0 && sizelist.size() > 0) {
+            buttonConstruct(T_SIZE, "Size", setting2[0]);
+            addSpace(R.dimen.ui_box_drop_down_space);
+            addQtybutton(setting2[1]);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean renderSelectionOrder(@Nullable Configuration conf) {
+        if (conf == null) {
+            return render_portrait();
+        }
+        if (conf.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            return render_portrait();
+        } else if (conf.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return render_landscape();
+        } else {
+            return false;
         }
     }
 
@@ -285,11 +301,6 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         Droptouch c = findByTag(T_QTY);
         c.setLabel("Qty: " + t);
         choice_of_quantity = t;
-        if (sizelist.size() > 0 && !instocksize) {
-            //add_bag.setEnabled(false);
-        } else if (varients.size() > 0 && !instockcolor) {
-            //add_bag.setEnabled(false);
-        }
         return this;
     }
 
@@ -381,8 +392,8 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     /**
      * show the list choices now
      *
-     * @param title
-     * @param items
+     * @param title string in title
+     * @param items list in array string
      */
     private void showListChoices(final String title, final String[] items, final int symbo) {
         final AlertDialog.Builder listchoices = new AlertDialog.Builder(mcontext);
@@ -559,5 +570,9 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
 
     public void setSubmissionCallBack(spinnerCallBack cb) {
         this.cb = cb;
+    }
+
+    public void invalidate() {
+        container1.requestLayout();
     }
 }

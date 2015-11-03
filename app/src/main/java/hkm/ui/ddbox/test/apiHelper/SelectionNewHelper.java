@@ -1,17 +1,9 @@
 package hkm.ui.ddbox.test.apiHelper;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.hypebeast.sdk.api.exception.ApiException;
 import com.hypebeast.sdk.api.model.hypebeaststore.ResponseSingleProduct;
@@ -25,11 +17,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import hkm.ui.ddbox.lib.SelectionSP;
 import hkm.ui.ddbox.lib.SelectionSpinner;
 import hkm.ui.ddbox.lib.bottomsheet.BottomSheetDialogFragment;
 import hkm.ui.ddbox.lib.bottomsheet.NumberPickerDialog;
 import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
-import hkm.ui.ddbox.lib.bottomsheet.onCallBackSimple;
 import hkm.ui.ddbox.lib.bottomsheet.spinnerCallBack;
 import hkm.ui.ddbox.lib.data.ProductGroupContainer;
 import hkm.ui.ddbox.test.R;
@@ -38,10 +30,10 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by hesk on 24/9/15.
+ * Created by hesk on 3/11/15.
  */
-public class SelectionHelper implements Callback<ResponseSingleProduct>, spinnerCallBack {
-    private SelectionSpinner mainlogic;
+public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spinnerCallBack {
+    private SelectionSP mainlogic;
 
     private SingleStringBS mDialogList;
     private NumberPickerDialog mDialogPicker;
@@ -49,9 +41,9 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
     private SingleProduct client;
     private Product mProductContainer;
 
-    public SelectionHelper(final Activity activity, final @IdRes int container) {
+    public SelectionNewHelper(final Activity activity, final @IdRes int container) {
         this.activity = activity;
-        mainlogic = new SelectionSpinner(activity, container);
+        mainlogic = new SelectionSP(activity, container);
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
@@ -75,12 +67,12 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
 
         mainlogic.addGroupProducts(p);
         mainlogic.addSizeGroup(nh);
-        mainlogic.init();
+        mainlogic.build();
     }
 
-    public SelectionHelper(final Activity activity, final @IdRes int container, final String starting_url) {
+    public SelectionNewHelper(final Activity activity, final @IdRes int container, final String starting_url) {
         this.activity = activity;
-        mainlogic = new SelectionSpinner(activity, container);
+        mainlogic = new SelectionSP(activity, container);
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
@@ -95,9 +87,9 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
         }
     }
 
-    public SelectionHelper(final Activity activity, final @IdRes int container, final long product_id) {
+    public SelectionNewHelper(final Activity activity, final @IdRes int container, final long product_id) {
         this.activity = activity;
-        mainlogic = new SelectionSpinner(activity, container);
+        mainlogic = new SelectionSP(activity, container);
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
@@ -112,11 +104,11 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
     }
 
 
-    public SelectionHelper(final Activity activity, final @IdRes int container, final Product mProduct) {
+    public SelectionNewHelper(final Activity activity, final @IdRes int container, final Product mProduct) {
         this.activity = activity;
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
-        mainlogic = new SelectionSpinner(activity, container);
+        mainlogic = new SelectionSP(activity, container);
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
@@ -126,7 +118,7 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
     }
 
 
-    public void addVariance(final Product mProduct, final SelectionSpinner listObject) {
+    public void addVariance(final Product mProduct, final SelectionSP listObject) {
         if (mProduct.hasVariance()) {
             try {
                 final ArrayList<Variant> list = mProduct.getMappedVariants();
@@ -160,12 +152,9 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
     }
 
     public void init() {
-        mainlogic.init();
+        mainlogic.build();
     }
 
-    public void invalidate() {
-        mainlogic.invalidate();
-    }
 
     private SingleStringBS prepareSingleStringListBS() {
         final Bundle bloop = new Bundle();
@@ -201,14 +190,14 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
     private void onExploreMoreProduct(Product mproduct) {
         mProductContainer = mproduct;
         addVariance(mproduct, mainlogic);
-        mainlogic.setSize("");
+        mainlogic.setSizeOption(0);
     }
 
     public void payload(Product mProduct) {
         mainlogic.addGroupProducts(getGroup(mProduct));
         mProductContainer = mProduct;
         addVariance(mProduct, mainlogic);
-        mainlogic.init();
+        mainlogic.build();
     }
 
     /**
@@ -265,7 +254,7 @@ public class SelectionHelper implements Callback<ResponseSingleProduct>, spinner
                              */
                             @Override
                             public void run() {
-                                mainlogic.setQty("1");
+                                mainlogic.setQuantityOption(1);
                                 //     successfulselecteditem(mProductContainer.product_id, mProductContainer.getVariantID(size), 1);
                             }
                         });

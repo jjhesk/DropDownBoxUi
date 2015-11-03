@@ -7,6 +7,7 @@ import com.hypebeast.sdk.Constants;
 import com.hypebeast.sdk.api.gson.GsonFactory;
 import com.hypebeast.sdk.api.gson.MissingCharacterConversion;
 import com.hypebeast.sdk.api.gson.RealmExclusion;
+import com.hypebeast.sdk.api.gson.WordpressConversion;
 import com.hypebeast.sdk.api.model.hbeditorial.Foundation;
 import com.hypebeast.sdk.api.resources.hypebeast.feedhost;
 
@@ -33,7 +34,6 @@ public class HBEditorialClient extends Client {
      * login adapter
      */
     private RestAdapter mLoginAdapter;
-
 
     private static HBEditorialClient static_instance;
 
@@ -72,6 +72,8 @@ public class HBEditorialClient extends Client {
                 .registerTypeAdapterFactory(new GsonFactory.NullStringToEmptyAdapterFactory())
                 .registerTypeAdapter(String.class, new MissingCharacterConversion())
                 .setExclusionStrategies(new RealmExclusion())
+
+                //.registerTypeAdapter(String.class, new WordpressConversion())
                 .create();
     }
 

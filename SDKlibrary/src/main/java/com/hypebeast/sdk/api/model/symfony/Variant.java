@@ -9,15 +9,15 @@ import java.util.ArrayList;
  */
 public class Variant {
     @SerializedName("id")
-    private int id;
+    private long id;
     @SerializedName("master")
     private boolean master;
     @SerializedName("options")
     private ArrayList<VarientContent> options;
-    @SerializedName("on_hand")
-    private int on_hand;
-    @SerializedName("on_hold")
-    private int on_hold;
+    @SerializedName("is_in_stock")
+    private boolean is_in_stock;
+    @SerializedName("is_last_one")
+    private boolean is_last_one;
 
     public enum Type {
         OUT_OF_STOCK,
@@ -30,7 +30,6 @@ public class Variant {
     private String variant_type_presentation;
     private String option_name;
     private String stock_config;
-    private boolean instock;
     private int stock_status = 0;
     private int stock_delta = 0;
     public Type stockStatus;
@@ -41,7 +40,7 @@ public class Variant {
 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -54,28 +53,25 @@ public class Variant {
         variant_type_presentation = options.get(0).option.presentation;
         variant_type = options.get(0).option.name;
         option_name = options.get(0).value;
-        stock_delta = on_hand - on_hold;
-        if (stock_delta == 1) {
-            stock_config = " (Last One Left)";
-            stock_status = LAST_ONE;
-            stockStatus = Type.LAST_ONE;
-        } else if (stock_delta == 0) {
-            stock_config = " (Out of Stock)";
-            stock_status = OUT_OF_STOCK;
-            stockStatus = Type.OUT_OF_STOCK;
-        } else {
+
+        if (is_in_stock) {
             stock_config = "";
             stock_status = NORMAL;
             stockStatus = Type.NORMAL;
+            if (is_last_one) {
+                stock_config = " (Last One Left)";
+                stock_status = LAST_ONE;
+                stockStatus = Type.LAST_ONE;
+            }
+        } else {
+            stock_config = " (Out of Stock)";
+            stock_status = OUT_OF_STOCK;
+            stockStatus = Type.OUT_OF_STOCK;
         }
-        instock = stock_delta > 0;
 
         return this;
     }
 
-    public int stockStatus() {
-        return stock_status;
-    }
 
     public String getType() {
         return variant_type_presentation;
@@ -94,14 +90,15 @@ public class Variant {
     }
 
     public String displayLastItem() {
-        return instock ? "Last Item" : "";
+        return is_in_stock ? "Last Item" : "";
     }
 
     public boolean instock() {
         return stock_status == LAST_ONE || stock_status == NORMAL;
     }
 
-    public int stock_available() {
-        return stock_delta;
+    public boolean isLastOne() {
+        return stock_status == LAST_ONE;
     }
+
 }

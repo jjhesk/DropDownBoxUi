@@ -3,17 +3,16 @@ package com.hypebeast.sdk.application.hbx;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.hypebeast.sdk.Constants;
 import com.hypebeast.sdk.api.exception.ApiException;
-import com.hypebeast.sdk.api.model.hbeditorial.Foundation;
-import com.hypebeast.sdk.api.model.hbeditorial.configbank;
-import com.hypebeast.sdk.api.model.hypebeaststore.MobileConfig;
+import com.hypebeast.sdk.api.model.hypebeaststore.ResponseMobileOverhead;
+import com.hypebeast.sdk.api.model.symfony.Config;
+import com.hypebeast.sdk.api.resources.hbstore.Authentication;
 import com.hypebeast.sdk.api.resources.hbstore.Brand;
 import com.hypebeast.sdk.api.resources.hbstore.Overhead;
 import com.hypebeast.sdk.api.resources.hbstore.Products;
-import com.hypebeast.sdk.api.resources.hypebeast.feedhost;
-import com.hypebeast.sdk.clients.HBEditorialClient;
 import com.hypebeast.sdk.clients.HBStoreApiClient;
 
 import java.sql.Timestamp;
@@ -33,13 +32,16 @@ public class ConfigurationSync {
     private final Application app;
     private Realm realm;
     public static final String PREFERENCE_FOUNDATION = "foundationfile";
+    public static final String ACCOUNT_USER = "hbxuser";
+    public static final String ACCOUNT_PASS = "hbxpass";
     public static final String PREFERENCE_FOUNDATION_REGISTRATION = "regtime";
-    private Products clientRequest;
+
     private Overhead mOverheadRequest;
-    private MobileConfig mFoundation;
+    private ResponseMobileOverhead mFoundation;
     private HBStoreApiClient client;
-    private Brand brandClientRequest;
+
     private ArrayList<sync> mListeners = new ArrayList<>();
+    private Authentication request_login;
     private sync mListener;
 
     public static ConfigurationSync with(Application app, sync mListener) {
@@ -56,7 +58,7 @@ public class ConfigurationSync {
 
     public static ConfigurationSync getInstance() throws Exception {
         if (instance == null) {
-            throw new Exception("please init a new instance");
+            throw new Exception("please init a new instance. or go to the slash screen again");
         }
         return instance;
     }
@@ -64,11 +66,10 @@ public class ConfigurationSync {
     public ConfigurationSync(Application app, sync mListener) {
         this.app = app;
         this.realm = Realm.getInstance(app);
-        client = new HBStoreApiClient();
+        client = HBStoreApiClient.getInstance();
         //client.setLanguageBase(HBEditorialClient.BASE_EN);
-        clientRequest = client.createProducts();
-        brandClientRequest = client.createBrand();
         mOverheadRequest = client.createOverHead();
+        request_login = client.createAuthentication();
         addInterface(mListener);
     }
 
@@ -87,53 +88,88 @@ public class ConfigurationSync {
     }
 
     private void executeListeners() {
-       /*   if (mListeners.size() > 0) {
-            Iterator<sync> lis = mListeners.iterator();
-            while (lis.hasNext()) {
-                sync listener = lis.next();
-                listener.syncDone(ConfigurationSync.this, mFoundation);
-            }
-        }*/
         if (mListener != null) mListener.syncDone(instance, mFoundation);
+    }
+
+    private boolean isLogin = false;
+
+    public boolean isLoginStatusValid() {
+        return isLogin;
+    }
+
+    private void syncCheckLogined() {
+        try {
+
+            String user = load(ACCOUNT_USER);
+            String pass = load(ACCOUNT_PASS);
+            if (user.equalsIgnoreCase("none") || pass.equalsIgnoreCase("none")) {
+                executeListeners();
+                return;
+            } else {
+                request_login.checkLoginStatus(user, pass, new Callback<String>() {
+                    @Override
+                    public void success(String s, Response response) {
+                        isLogin = true;
+                        executeListeners();
+                        Log.d("loginHBX", "login result : " + s);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError e) {
+                        //if (mListener != null) mListener.error(e.getMessage());
+                        Log.d("loginHBX", e.getMessage());
+                    }
+                });
+            }
+
+
+        } catch (ApiException e) {
+            Log.d("loginHBX", e.getMessage());
+            //  if (mListener != null) mListener.error(e.getMessage());
+        }
     }
 
     private void syncWorkerThread() {
         try {
-            mOverheadRequest.mobile_config(new Callback<MobileConfig>() {
+            mOverheadRequest.mobile_config(new Callback<ResponseMobileOverhead>() {
                 @Override
-                public void success(MobileConfig foundation, Response response) {
+                public void success(ResponseMobileOverhead foundation, Response response) {
                     mFoundation = foundation;
-
-                    PreferenceManager.getDefaultSharedPreferences(app)
-                            .edit()
-                            .putString(PREFERENCE_FOUNDATION, client.fromJsonToString(foundation))
-                            .commit();
-
+                    saveInfo(PREFERENCE_FOUNDATION, client.fromJsonToString(foundation));
                     Date date = new Date();
                     Timestamp timestamp = new Timestamp(date.getTime());
-
-                    PreferenceManager.getDefaultSharedPreferences(app)
-                            .edit()
-                            .putString(PREFERENCE_FOUNDATION_REGISTRATION, timestamp.toString())
-                            .commit();
-
-                    executeListeners();
+                    saveInfo(PREFERENCE_FOUNDATION_REGISTRATION, timestamp.toString());
+                    //the second task is now started - check login status
+                    syncCheckLogined();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    if (mListener != null) mListener.error(error.getMessage());
                 }
             });
         } catch (ApiException e) {
-            e.printStackTrace();
+            if (mListener != null) mListener.error(e.getMessage());
         }
     }
 
-    private void init() {
+    private void saveInfo(final String tag, final String data) {
+        PreferenceManager.getDefaultSharedPreferences(app)
+                .edit()
+                .putString(tag, data)
+                .commit();
+
+    }
+
+    private String load(final String tag) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(app);
-        String data = sharedPreferences.getString(PREFERENCE_FOUNDATION, "none");
-        String time = sharedPreferences.getString(PREFERENCE_FOUNDATION_REGISTRATION, "none");
+        String data = sharedPreferences.getString(tag, "none");
+        return data;
+    }
+
+    private void init() {
+        String data = load(PREFERENCE_FOUNDATION);
+        String time = load(PREFERENCE_FOUNDATION_REGISTRATION);
         if (!data.equalsIgnoreCase("none") && !time.equalsIgnoreCase("none")) {
             Timestamp past = Timestamp.valueOf(time);
             Date date = new Date();
@@ -156,7 +192,7 @@ public class ConfigurationSync {
         }
     }
 
-    public MobileConfig getFoundation() {
+    public ResponseMobileOverhead getFoundation() {
         return mFoundation;
     }
 

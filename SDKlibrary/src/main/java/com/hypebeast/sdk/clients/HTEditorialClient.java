@@ -11,8 +11,11 @@ import com.hypebeast.sdk.api.exception.ApiException;
 import com.hypebeast.sdk.api.gson.GsonFactory;
 import com.hypebeast.sdk.api.gson.MissingCharacterConversion;
 import com.hypebeast.sdk.api.gson.RealmExclusion;
+import com.hypebeast.sdk.api.gson.WordpressConversion;
+import com.hypebeast.sdk.api.model.hbeditorial.Foundation;
 import com.hypebeast.sdk.api.model.popbees.mobileconfig;
 import com.hypebeast.sdk.api.resources.ht.hTrak;
+import com.hypebeast.sdk.api.resources.pb.pbPost;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -91,7 +94,7 @@ public class HTEditorialClient extends Client {
                 .setDateFormat(DATE_FORMAT)
                 .setExclusionStrategies(new RealmExclusion())
                 .registerTypeAdapterFactory(new GsonFactory.NullStringToEmptyAdapterFactory())
-                .registerTypeAdapter(String.class, new MissingCharacterConversion(true))
+                .registerTypeAdapter(String.class, new WordpressConversion())
                 .create();
     }
 
