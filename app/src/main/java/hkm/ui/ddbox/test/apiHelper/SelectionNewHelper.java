@@ -73,7 +73,6 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         mainlogic.build();
 
 
-
     }
 
     public SelectionNewHelper(final Activity activity, final @IdRes int container, final String starting_url) {
@@ -170,6 +169,11 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         bloop.putFloat(BottomSheetDialogFragment.MEASUREMENT_HEIGHT, (int) activity.getResources().getDimension(R.dimen.ui_bs_dialog_height));
         final SingleStringBS instance = SingleStringBS.newInstace(bloop);
         return instance;
+    }
+
+    @Override
+    public void onDialogQuantityBoxNotAvailable(SelectionSP self) {
+
     }
 
     private NumberPickerDialog prepareNumberPickerBS() {

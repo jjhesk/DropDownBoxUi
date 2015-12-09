@@ -70,6 +70,11 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         }
 
         @Override
+        public void onDialogQuantityBoxNotAvailable(SelectionSP self) {
+
+        }
+
+        @Override
         public void onSubmission(int group, final int size, int quantity) {
 
         }

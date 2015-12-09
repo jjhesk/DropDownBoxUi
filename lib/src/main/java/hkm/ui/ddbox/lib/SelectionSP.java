@@ -44,6 +44,7 @@ public class SelectionSP extends onCallBackSimple {
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
     private int mCurrentTransitionEffect = JazzyHelper.FADE;
     private BottomSheetBase numberpicker, listpicker;
+    private boolean lock_quantity_dropdown;
     private final int
             layout_options1 = R.layout.options_1,
             layout_options21 = R.layout.options_21,
@@ -68,6 +69,11 @@ public class SelectionSP extends onCallBackSimple {
         }
 
         @Override
+        public void onDialogQuantityBoxNotAvailable(SelectionSP self) {
+
+        }
+
+        @Override
         public void onSubmission(int group, final int size, int quantity) {
 
         }
@@ -78,13 +84,19 @@ public class SelectionSP extends onCallBackSimple {
         container1 = inflated_container;
         mcontext = act;
         max_pickable_number = 99;
+        lock_quantity_dropdown = false;
+    }
+
+    public SelectionSP lockQuantityBox(boolean tox) {
+        lock_quantity_dropdown = tox;
+        return this;
     }
 
     public SelectionSP setMaxNumToBePicked(final int max) {
         max_pickable_number = max;
-        if(numberpicker!=null){
-            if(numberpicker instanceof NumberPickerDialog){
-                final NumberPickerDialog numpick =(NumberPickerDialog)numberpicker;
+        if (numberpicker != null) {
+            if (numberpicker instanceof NumberPickerDialog) {
+                final NumberPickerDialog numpick = (NumberPickerDialog) numberpicker;
                 numpick.setMaxPickerNum(max);
             }
         }
@@ -222,10 +234,14 @@ public class SelectionSP extends onCallBackSimple {
      */
     private void showDialogPickerNumber() {
         current_choosing_type = supporttype.QTY;
-        if (numberpicker == null) {
-            defaultnumberpicker();
+        if (lock_quantity_dropdown) {
+            cb.onDialogQuantityBoxNotAvailable(this);
         } else {
-            numberpicker.show(mcontext.getFragmentManager().beginTransaction(), "NumPicker");
+            if (numberpicker == null) {
+                defaultnumberpicker();
+            } else {
+                numberpicker.show(mcontext.getFragmentManager().beginTransaction(), "NumPicker");
+            }
         }
     }
 
