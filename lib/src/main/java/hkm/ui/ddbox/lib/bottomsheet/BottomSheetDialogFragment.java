@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.neopixl.pixlui.components.textview.TextView;
@@ -27,7 +28,7 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
     protected RecyclerView mRecyclerView;
     private JazzyRecyclerViewScrollListener jazzyScrollListener;
     private TextView mTextview;
-    private TintImageView mback;
+    private ImageButton mback;
     private String mTitle;
 
     private RecyclerView.LayoutManager createLayoutManager(int itemLayoutRes, boolean isStaggered) {
@@ -57,7 +58,7 @@ public abstract class BottomSheetDialogFragment extends BottomSheetBase implemen
             mTextview.setText(mTitle);
         } else
             mTextview.setText(getArguments().getString(DIALOG_TITLE, ""));
-        mback = (TintImageView) root.findViewById(R.id.hkmspinnersheet_back);
+        mback = (ImageButton) root.findViewById(R.id.hkmspinnersheet_back);
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.widget.FrameLayout;
 
 import com.hypebeast.sdk.api.exception.ApiException;
 import com.hypebeast.sdk.api.model.hypebeaststore.ResponseSingleProduct;
@@ -35,6 +36,8 @@ import retrofit.client.Response;
 public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spinnerCallBack {
     private SelectionSP mainlogic;
 
+    private int holding_quantity = 0;
+    private boolean onExploreRelatedProduct = false;
     private SingleStringBS mDialogList;
     private NumberPickerDialog mDialogPicker;
     private Activity activity;
@@ -43,7 +46,7 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
 
     public SelectionNewHelper(final Activity activity, final @IdRes int container) {
         this.activity = activity;
-        mainlogic = new SelectionSP(activity, container);
+        mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
@@ -68,11 +71,14 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         mainlogic.addGroupProducts(p);
         mainlogic.addSizeGroup(nh);
         mainlogic.build();
+
+
+
     }
 
     public SelectionNewHelper(final Activity activity, final @IdRes int container, final String starting_url) {
         this.activity = activity;
-        mainlogic = new SelectionSP(activity, container);
+        mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
@@ -87,7 +93,7 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         }
     }
 
-    public SelectionNewHelper(final Activity activity, final @IdRes int container, final long product_id) {
+    public SelectionNewHelper(final Activity activity, final FrameLayout container, final long product_id) {
         this.activity = activity;
         mainlogic = new SelectionSP(activity, container);
         mainlogic.setSubmissionCallBack(this);
@@ -102,20 +108,20 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
             e.printStackTrace();
         }
     }
-
+/*
 
     public SelectionNewHelper(final Activity activity, final @IdRes int container, final Product mProduct) {
         this.activity = activity;
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
-        mainlogic = new SelectionSP(activity, container);
+        mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
         mainlogic.setSubmissionCallBack(this);
         mDialogList = prepareSingleStringListBS();
         mDialogPicker = prepareNumberPickerBS();
         mainlogic.setCustomListPicker(mDialogList);
         mainlogic.setCustomNumberPicker(mDialogPicker);
         payload(mProduct);
-    }
+    }*/
 
 
     public void addVariance(final Product mProduct, final SelectionSP listObject) {
@@ -134,6 +140,8 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
                 e.printStackTrace();
             }
         }
+
+
         // variances.clear();
         //  variances.addAll(list);
     }
@@ -191,6 +199,8 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         mProductContainer = mproduct;
         addVariance(mproduct, mainlogic);
         mainlogic.setSizeOption(0);
+
+        mainlogic.setMaxNumToBePicked(4);
     }
 
     public void payload(Product mProduct) {
@@ -198,6 +208,8 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         mProductContainer = mProduct;
         addVariance(mProduct, mainlogic);
         mainlogic.build();
+
+        mainlogic.setMaxNumToBePicked(4);
     }
 
     /**
@@ -216,8 +228,6 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         mainlogic.triggerAddBag();
     }
 
-    private int holding_quantity = 0;
-    private boolean onExploreRelatedProduct = false;
 
     @Override
     public void onSelectRelatedProduct(int group, int quantity) {

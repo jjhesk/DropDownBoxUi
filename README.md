@@ -6,6 +6,12 @@ Version
 ========
 Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready. X.X.X to be the lastest version possible you can find from the release log.
 
+Recent Updates
+========
+v0.8.0
+There is an update issue on the module TintImageView. It is notified and removed accordingly. The new module will fit for running API 23.1.0 or above.
+
+
 
 buildscript
 ```gradle
@@ -15,7 +21,7 @@ repositories {
 }
 
 dependencies {
-   compile 'com.hkm.dropboxui:dropdownuilib:0.7.2'
+   compile 'com.hkm.dropboxui:dropdownuilib:0.8.0'
 }
 ```
 

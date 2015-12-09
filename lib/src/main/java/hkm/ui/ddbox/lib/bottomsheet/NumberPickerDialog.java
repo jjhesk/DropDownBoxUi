@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.internal.widget.TintImageView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 
 import com.neopixl.pixlui.components.textview.TextView;
@@ -16,8 +17,9 @@ import hkm.ui.ddbox.lib.R;
  */
 public class NumberPickerDialog extends BottomSheetBase {
     private TextView mTextview;
-    private TintImageView mback, mapply;
+    private ImageButton mback, mapply;
     private android.widget.NumberPicker mPicker;
+    private int max_picker_number = 0;
 
     public static NumberPickerDialog newInstace(Bundle data) {
         final NumberPickerDialog fragment = new NumberPickerDialog();
@@ -32,13 +34,18 @@ public class NumberPickerDialog extends BottomSheetBase {
         return R.layout.bs_picker;
     }
 
+    public void setMaxPickerNum(int max) {
+        max_picker_number = max;
+
+    }
+
     @Override
     protected void onCreatExtraElements() {
         mPicker = (android.widget.NumberPicker) root.findViewById(R.id.hkmspinnersheet_picker);
         mTextview = (TextView) root.findViewById(R.id.hkmspinnersheet_title);
         mTextview.setText(getArguments().getString(DIALOG_TITLE, ""));
-        mback = (TintImageView) root.findViewById(R.id.hkmspinnersheet_back);
-        mapply = (TintImageView) root.findViewById(R.id.hkmspinnersheet_confirm);
+        mback = (ImageButton) root.findViewById(R.id.hkmspinnersheet_back);
+        mapply = (ImageButton) root.findViewById(R.id.hkmspinnersheet_confirm);
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +57,10 @@ public class NumberPickerDialog extends BottomSheetBase {
             }
         });
         mPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        mPicker.setMaxValue(77); // max value 100
+        if (max_picker_number == 0) {
+            max_picker_number = 99;
+        }
+        mPicker.setMaxValue(max_picker_number); // max value 100
         mPicker.setMinValue(1);   // min value 0
         mPicker.setWrapSelectorWheel(false);
         mapply.setOnClickListener(new View.OnClickListener() {

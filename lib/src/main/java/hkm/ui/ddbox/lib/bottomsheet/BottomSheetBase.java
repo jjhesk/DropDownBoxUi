@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import hkm.ui.ddbox.lib.R;
@@ -95,8 +97,25 @@ public abstract class BottomSheetBase extends DialogFragment {
                 root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+       // enableBlurBackGround(getDialog().getWindow(), root.getRootView(), getActivity());
         onCreatExtraElements();
         return root;
+    }
+
+    protected void enableBlurBackGround(final Window rootview, final View content, final Activity activity) {
+        if (content.getWidth() > 0) {
+            Bitmap image = BlurBuilder.blur(content);
+            rootview.setBackgroundDrawable(new BitmapDrawable(activity.getResources(), image));
+        } else {
+            content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Bitmap image = BlurBuilder.blur(content);
+                    rootview.setBackgroundDrawable(new BitmapDrawable(activity.getResources(), image));
+                }
+            });
+        }
+
     }
 
     protected abstract void onCreatExtraElements();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="stroke_color_box">#ffaaaaaa</color>
+    <color name="stroke_color_box">#FFEEEEEE</color>
     <color name="box_text">#444444</color>
     <color name="rippleCole">#cbcbcb</color>
     <color name="halfTransWhite">#e6ffffff</color>

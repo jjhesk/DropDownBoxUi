@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import hkm.ui.ddbox.lib.bottomsheet.BottomSheetBase;
+import hkm.ui.ddbox.lib.bottomsheet.NumberPickerDialog;
 import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
 import hkm.ui.ddbox.lib.bottomsheet.onCallBackSimple;
 import hkm.ui.ddbox.lib.bottomsheet.spinnerCallBack;
@@ -72,9 +73,22 @@ public class SelectionSP extends onCallBackSimple {
         }
     };
 
-    public SelectionSP(final Activity act, @IdRes int container_Id) {
-        container1 = (FrameLayout) act.findViewById(container_Id);
+
+    public SelectionSP(final Activity act, FrameLayout inflated_container) {
+        container1 = inflated_container;
         mcontext = act;
+        max_pickable_number = 99;
+    }
+
+    public SelectionSP setMaxNumToBePicked(final int max) {
+        max_pickable_number = max;
+        if(numberpicker!=null){
+            if(numberpicker instanceof NumberPickerDialog){
+                final NumberPickerDialog numpick =(NumberPickerDialog)numberpicker;
+                numpick.setMaxPickerNum(max);
+            }
+        }
+        return this;
     }
 
     public SelectionSP setCustomNumberPicker(BottomSheetBase picker) {
@@ -100,6 +114,7 @@ public class SelectionSP extends onCallBackSimple {
     }
 
     private Droptouch quantity, size, group;
+    private int max_pickable_number;
 
     private View bindItems(View v) {
         quantity = (Droptouch) v.findViewById(R.id.hkm_sp_lc1);
@@ -234,7 +249,7 @@ public class SelectionSP extends onCallBackSimple {
         d.setContentView(R.layout.dialog_picker);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         Button b = (Button) d.findViewById(R.id.set_process_button);
-        np.setMaxValue(99); // max value 100
+        np.setMaxValue(max_pickable_number); // max value 100
         np.setMinValue(1);   // min value 0
         np.setWrapSelectorWheel(false);
             /*np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -301,7 +316,7 @@ public class SelectionSP extends onCallBackSimple {
 
     public void initInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mCurrentTransitionEffect = savedInstanceState.getInt(KEY_TRANSITION_EFFECT, JazzyHelper.HELIX);
+            mCurrentTransitionEffect = savedInstanceState.getInt(KEY_TRANSITION_EFFECT, mCurrentTransitionEffect);
             setupJazziness(mCurrentTransitionEffect);
         }
     }
