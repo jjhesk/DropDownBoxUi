@@ -68,8 +68,6 @@ public class Droptouch extends LinearLayout {
         fme = (RippleView) mainlayout.findViewById(R.id.box_touch_area);
         tv = (TextView) mainlayout.findViewById(R.id.box_ui_text_id);
         density = getContext().getResources().getDisplayMetrics().density;
-
-
     }
 
     public void setTag(int n) {

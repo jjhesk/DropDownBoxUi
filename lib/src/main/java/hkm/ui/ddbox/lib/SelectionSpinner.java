@@ -65,7 +65,12 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     private BottomSheetBase numberpicker, listpicker;
     private spinnerCallBack cb = new spinnerCallBack() {
         @Override
-        public void onSelectRelatedProduct(int group, int quantity) {
+        public void onUpdateRelatedProduct(int group, int quantity) {
+
+        }
+
+        @Override
+        public void onUpdateSize(int selection) {
 
         }
 
@@ -565,7 +570,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         } else if (current_choosing_type == supporttype.VARIANT) {
             chk_var = itemPosition;
             setColor(data_item);
-            cb.onSelectRelatedProduct(chk_var, chk_qty);
+            cb.onUpdateRelatedProduct(chk_var, chk_qty);
         }
     }
 

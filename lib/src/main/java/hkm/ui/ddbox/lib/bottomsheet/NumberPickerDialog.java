@@ -2,7 +2,6 @@ package hkm.ui.ddbox.lib.bottomsheet;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.v7.internal.widget.TintImageView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;

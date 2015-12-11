@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import hkm.ui.ddbox.lib.HBWork.classicHelper;
 import hkm.ui.ddbox.lib.SelectionSP;
 import hkm.ui.ddbox.lib.SelectionSpinner;
 import hkm.ui.ddbox.lib.bottomsheet.BottomSheetDialogFragment;
@@ -33,18 +34,15 @@ import retrofit.client.Response;
 /**
  * Created by hesk on 3/11/15.
  */
-public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spinnerCallBack {
-    private SelectionSP mainlogic;
+public class SelectionNewHelper extends classicHelper implements Callback<ResponseSingleProduct> {
 
-    private int holding_quantity = 0;
-    private boolean onExploreRelatedProduct = false;
-    private SingleStringBS mDialogList;
-    private NumberPickerDialog mDialogPicker;
-    private Activity activity;
+
+
+
     private SingleProduct client;
     private Product mProductContainer;
+/*
 
-    public SelectionNewHelper(final Activity activity, final @IdRes int container) {
         this.activity = activity;
         mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
         mainlogic.setSubmissionCallBack(this);
@@ -73,33 +71,10 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         mainlogic.build();
 
 
-    }
-
-    public SelectionNewHelper(final Activity activity, final @IdRes int container, final String starting_url) {
-        this.activity = activity;
-        mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
-        mainlogic.setSubmissionCallBack(this);
-        mDialogList = prepareSingleStringListBS();
-        mDialogPicker = prepareNumberPickerBS();
-        mainlogic.setCustomListPicker(mDialogList);
-        mainlogic.setCustomNumberPicker(mDialogPicker);
-        client = HBStoreApiClient.newInstance().createRequest();
-        Uri t = Uri.parse(starting_url);
-        try {
-            client.FullPathReq(t.getPathSegments().get(0), t.getPathSegments().get(1), t.getPathSegments().get(2), this);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-    }
+    */
 
     public SelectionNewHelper(final Activity activity, final FrameLayout container, final long product_id) {
-        this.activity = activity;
-        mainlogic = new SelectionSP(activity, container);
-        mainlogic.setSubmissionCallBack(this);
-        mDialogList = prepareSingleStringListBS();
-        mDialogPicker = prepareNumberPickerBS();
-        mainlogic.setCustomListPicker(mDialogList);
-        mainlogic.setCustomNumberPicker(mDialogPicker);
+        super(activity, container);
         client = HBStoreApiClient.newInstance().createRequest();
         try {
             client.PIDReq(product_id, this);
@@ -107,20 +82,6 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
             e.printStackTrace();
         }
     }
-/*
-
-    public SelectionNewHelper(final Activity activity, final @IdRes int container, final Product mProduct) {
-        this.activity = activity;
-        mDialogList = prepareSingleStringListBS();
-        mDialogPicker = prepareNumberPickerBS();
-        mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
-        mainlogic.setSubmissionCallBack(this);
-        mDialogList = prepareSingleStringListBS();
-        mDialogPicker = prepareNumberPickerBS();
-        mainlogic.setCustomListPicker(mDialogList);
-        mainlogic.setCustomNumberPicker(mDialogPicker);
-        payload(mProduct);
-    }*/
 
 
     public void addVariance(final Product mProduct, final SelectionSP listObject) {
@@ -163,25 +124,14 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
     }
 
 
-    private SingleStringBS prepareSingleStringListBS() {
-        final Bundle bloop = new Bundle();
-        bloop.putInt(BottomSheetDialogFragment.MEASUREMENT_HEIGHT, (int) activity.getResources().getDimension(R.dimen.ui_bs_dialog_height));
-        bloop.putFloat(BottomSheetDialogFragment.MEASUREMENT_HEIGHT, (int) activity.getResources().getDimension(R.dimen.ui_bs_dialog_height));
-        final SingleStringBS instance = SingleStringBS.newInstace(bloop);
-        return instance;
-    }
-
     @Override
     public void onDialogQuantityBoxNotAvailable(SelectionSP self) {
 
     }
 
-    private NumberPickerDialog prepareNumberPickerBS() {
-        final Bundle bloop = new Bundle();
-        bloop.putInt(BottomSheetDialogFragment.MEASUREMENT_HEIGHT, (int) activity.getResources().getDimension(R.dimen.ui_bs_dialog_height));
-        bloop.putString(BottomSheetDialogFragment.DIALOG_TITLE, "Quantity");
-        final NumberPickerDialog instance = NumberPickerDialog.newInstace(bloop);
-        return instance;
+    @Override
+    protected int getDialogPickerHeightRes() {
+        return R.dimen.ui_bs_dialog_height;
     }
 
 
@@ -194,26 +144,23 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
     @Override
     public void success(ResponseSingleProduct responseSingleProduct, Response response) {
         if (onExploreRelatedProduct) {
-            onExploreMoreProduct(responseSingleProduct.mproduct);
+            Product mproduct = responseSingleProduct.mproduct;
+
+            mProductContainer = mproduct;
+            addVariance(mproduct, mainlogic);
+            mainlogic.setSizeOption(0);
+
+            mainlogic.setMaxNumToBePicked(4);
         } else
             payload(responseSingleProduct.mproduct);
     }
 
-    private void onExploreMoreProduct(Product mproduct) {
-        mProductContainer = mproduct;
-        addVariance(mproduct, mainlogic);
-        mainlogic.setSizeOption(0);
-
-        mainlogic.setMaxNumToBePicked(4);
-    }
 
     public void payload(Product mProduct) {
         mainlogic.addGroupProducts(getGroup(mProduct));
         mProductContainer = mProduct;
         addVariance(mProduct, mainlogic);
         mainlogic.build();
-
-        mainlogic.setMaxNumToBePicked(4);
     }
 
     /**
@@ -226,6 +173,7 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
     public void failure(RetrofitError error) {
         final SMessage mss = SMessage.message("Connection error." + error.getMessage());
         mss.show(activity.getFragmentManager(), "con_err");
+        setStatus(STATUS_IDEAL);
     }
 
     public void confirm() {
@@ -234,8 +182,9 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
 
 
     @Override
-    public void onSelectRelatedProduct(int group, int quantity) {
+    public void onUpdateRelatedProduct(int group, int quantity) {
         try {
+            setStatus(STATUS_BUSY);
             final String href = mProductContainer.getProductGroupContainer().get(group).href;
             final List<String> h = Uri.parse(href).getPathSegments();
             holding_quantity = quantity;
@@ -244,6 +193,11 @@ public class SelectionNewHelper implements Callback<ResponseSingleProduct>, spin
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onUpdateSize(int selection) {
+
     }
 
     @Override

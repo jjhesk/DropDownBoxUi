@@ -64,7 +64,12 @@ public class SelectionSP extends onCallBackSimple {
     private ArrayList<String> sizelist = new ArrayList<>();
     private spinnerCallBack cb = new spinnerCallBack() {
         @Override
-        public void onSelectRelatedProduct(int group, int quantity) {
+        public void onUpdateRelatedProduct(int group, int quantity) {
+
+        }
+
+        @Override
+        public void onUpdateSize(int selection) {
 
         }
 
@@ -163,6 +168,7 @@ public class SelectionSP extends onCallBackSimple {
     }
 
     public void build() {
+        container1.removeAllViews();
         if (varients.size() > 0 && sizelist.size() > 0) {
             View view = bindItems(mcontext.getLayoutInflater().inflate(layout_options3, null, false));
             container1.addView(view);
@@ -197,6 +203,7 @@ public class SelectionSP extends onCallBackSimple {
      * shows the number picker dialog at the screen
      */
     private void sizeListDialog(String title, final List<String> list) {
+
         if (list.size() == 0) return;
         current_choosing_type = supporttype.SIZE;
         if (listpicker == null) {
@@ -209,10 +216,11 @@ public class SelectionSP extends onCallBackSimple {
                 dialog.setTitle(title);
             }
         }
+
     }
 
     /**
-     * shows the number picker dialog at the screen
+     * show the list choice items on the screen
      */
     private void normalListDialog(String title, List<ProductGroupContainer> list) {
         if (list.size() == 0) return;
@@ -221,7 +229,7 @@ public class SelectionSP extends onCallBackSimple {
             defaultnormalListDialog(title, list);
         } else {
             if (listpicker instanceof SingleStringBS) {
-                SingleStringBS dialog = (SingleStringBS) listpicker;
+                final SingleStringBS dialog = (SingleStringBS) listpicker;
                 dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
                 dialog.setListData(containerToList(list));
                 dialog.setTitle(title);
@@ -371,7 +379,7 @@ public class SelectionSP extends onCallBackSimple {
             setSize(itemPosition);
         } else if (current_choosing_type == supporttype.VARIANT) {
             setGroup(itemPosition);
-            cb.onSelectRelatedProduct(choice_of_variance, choice_of_size);
+            cb.onUpdateRelatedProduct(choice_of_variance, choice_of_size);
         }
     }
 
@@ -379,7 +387,7 @@ public class SelectionSP extends onCallBackSimple {
         cb.onSubmission(choice_of_variance, choice_of_size, choice_of_quantity);
     }
 
-    public void setSubmissionCallBack(spinnerCallBack cb) {
+    public void setConnectionModule(spinnerCallBack cb) {
         this.cb = cb;
     }
 
@@ -395,15 +403,16 @@ public class SelectionSP extends onCallBackSimple {
         setQty(t);
     }
 
-    public void setSizeOption(int t) {
-        setSize(t);
+    public void setSizeOption(final int selection) {
+        setSize(selection);
     }
 
-    private SelectionSP setSize(int t) {
-        if (size != null && sizelist.size() > t) {
-            String selection = sizelist.get(t);
+    private SelectionSP setSize(int t_select_choice) {
+        if (size != null && sizelist.size() > t_select_choice) {
+            cb.onUpdateSize(t_select_choice);
+            String selection = sizelist.get(t_select_choice);
             size.setLabel("Size: " + selection);
-            choice_of_size = t;
+            choice_of_size = t_select_choice;
         }
         return this;
     }

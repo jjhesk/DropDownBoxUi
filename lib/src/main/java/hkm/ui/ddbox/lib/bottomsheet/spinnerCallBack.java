@@ -8,7 +8,9 @@ import hkm.ui.ddbox.lib.SelectionSP;
 public interface spinnerCallBack {
     void onSubmission(final int group, final int size, final int quantity);
 
-    void onSelectRelatedProduct(final int group, final int quantity);
-
     void onDialogQuantityBoxNotAvailable(final SelectionSP self);
+
+    void onUpdateSize(final int selection);
+
+    void onUpdateRelatedProduct(final int group, final int quantity);
 }

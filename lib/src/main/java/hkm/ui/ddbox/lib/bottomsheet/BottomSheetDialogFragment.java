@@ -1,7 +1,6 @@
 package hkm.ui.ddbox.lib.bottomsheet;
 
 import android.support.annotation.LayoutRes;
-import android.support.v7.internal.widget.TintImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
