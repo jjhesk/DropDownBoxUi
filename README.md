@@ -1,10 +1,11 @@
-# DropDownBoxUi[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)[![Version](https://img.shields.io/github/tag/jjhesk/DropDownBoxUi.svg?label=maven)](https://jitpack.io/#jjhesk/DropDownBoxUi/) [![gitpay](http://fc07.deviantart.net/fs70/f/2012/336/f/9/little_pixel_heart_by_tiny_bear-d5mtwiu.gif)](https://gratipay.com/jjhesk/)
+# DropDownBoxUi[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)[ ![Download](https://api.bintray.com/packages/jjhesk/maven/dropdownuilib/images/download.svg) ](https://bintray.com/jjhesk/maven/dropdownuilib/_latestVersion) [![gitpay](http://fc07.deviantart.net/fs70/f/2012/336/f/9/little_pixel_heart_by_tiny_bear-d5mtwiu.gif)](https://gratipay.com/jjhesk/)
 ========
+
 A custom made drop down box Ui for handy use.
 
 Version
 ========
-Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready. X.X.X to be the lastest version possible you can find from the release log.
+Please see the [release log](https://github.com/jjhesk/DropDownBoxUi/releases/) for the latest updated version. Gradle setup is also ready. X.X.X to be the latest version possible you can find from the release log.
 
 Recent Updates
 ========
@@ -21,7 +22,7 @@ repositories {
 }
 
 dependencies {
-   compile 'com.hkm.dropboxui:dropdownuilib:0.8.0'
+  compile 'com.hkm.ui:dropdownuilib:1.0.0'
 }
 ```
 
