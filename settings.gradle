@@ -1,1 +1,2 @@
-include ':app', ':lib', ':SDKlibrary'
+include ':app', ':lib'
+//, ':SDKlibrary'

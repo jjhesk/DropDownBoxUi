@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="sdklibrary-0.8.7">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hb/sdklibrary/0.8.7/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hb/sdklibrary/0.8.7/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.hb/sdklibrary/0.8.7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.hb/sdklibrary/0.8.7/f44d2b4b5fe4918d98f8d11299bc0bf673c4df00/sdklibrary-0.8.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

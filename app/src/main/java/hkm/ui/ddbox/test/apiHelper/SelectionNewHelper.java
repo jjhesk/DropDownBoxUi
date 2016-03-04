@@ -1,9 +1,7 @@
 package hkm.ui.ddbox.test.apiHelper;
 
 import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
 
 import com.hypebeast.sdk.api.exception.ApiException;
@@ -20,12 +18,12 @@ import java.util.List;
 
 import hkm.ui.ddbox.lib.HBWork.classicHelper;
 import hkm.ui.ddbox.lib.SelectionSP;
-import hkm.ui.ddbox.lib.SelectionSpinner;
-import hkm.ui.ddbox.lib.bottomsheet.BottomSheetDialogFragment;
-import hkm.ui.ddbox.lib.bottomsheet.NumberPickerDialog;
-import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
-import hkm.ui.ddbox.lib.bottomsheet.spinnerCallBack;
 import hkm.ui.ddbox.lib.data.ProductGroupContainer;
+import hkm.ui.ddbox.lib.icontainer;
+import hkm.ui.ddbox.lib.fragmentdialogbottomsheet.B;
+import hkm.ui.ddbox.lib.fragmentdialogbottomsheet.listDialog;
+import hkm.ui.ddbox.lib.fragmentdialogbottomsheet.listNumberPicker;
+import hkm.ui.ddbox.lib.fragmentdialogbottomsheet.selectItem;
 import hkm.ui.ddbox.test.R;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -36,46 +34,13 @@ import retrofit.client.Response;
  */
 public class SelectionNewHelper extends classicHelper implements Callback<ResponseSingleProduct> {
 
-
-
-
     private SingleProduct client;
     private Product mProductContainer;
-/*
-
-        this.activity = activity;
-        mainlogic = new SelectionSP(activity, (FrameLayout) activity.findViewById(container));
-        mainlogic.setSubmissionCallBack(this);
-        mDialogList = prepareSingleStringListBS();
-        mDialogPicker = prepareNumberPickerBS();
-        mainlogic.setCustomListPicker(mDialogList);
-        mainlogic.setCustomNumberPicker(mDialogPicker);
-
-        //hardcode
-        ArrayList<ProductGroupContainer> p = new ArrayList<>();
-        p.add(new ProductGroupContainer("A", "ifosnffse"));
-        p.add(new ProductGroupContainer("B tis is i", "ifosnffse"));
-        p.add(new ProductGroupContainer("V cloan noi niosnn n", "ifosnffse"));
-        p.add(new ProductGroupContainer("H cloan noi niosnn n", "ifosnffse"));
-        p.add(new ProductGroupContainer("HH cloan noi niosnn n", "ifosnffse"));
-        p.add(new ProductGroupContainer("BS cloan noi niosnn n", "ifosnffse"));
-
-        ArrayList<String> nh = new ArrayList<>();
-        nh.add("M+");
-        nh.add("GM+");
-        nh.add("EM+");
-        nh.add("VM+");
-
-        mainlogic.addGroupProducts(p);
-        mainlogic.addSizeGroup(nh);
-        mainlogic.build();
-
-
-    */
+    private ArrayList<ProductGroupContainer> plist = new ArrayList<>();
 
     public SelectionNewHelper(final Activity activity, final FrameLayout container, final long product_id) {
         super(activity, container);
-        client = HBStoreApiClient.newInstance().createRequest();
+        client = HBStoreApiClient.getInstance(activity).createRequest();
         try {
             client.PIDReq(product_id, this);
         } catch (ApiException e) {
@@ -107,21 +72,74 @@ public class SelectionNewHelper extends classicHelper implements Callback<Respon
     }
 
     private List<ProductGroupContainer> getGroup(Product mproduct) {
-        ArrayList<ProductGroupContainer> p = new ArrayList<>();
+        plist = new ArrayList<>();
         ArrayList<com.hypebeast.sdk.api.model.symfony.ProductGroupContainer> group = mproduct.getProductGroupContainer();
-        if (group == null) return p;
+        if (group == null) return plist;
         Iterator<com.hypebeast.sdk.api.model.symfony.ProductGroupContainer> ig = group.iterator();
         while (ig.hasNext()) {
             com.hypebeast.sdk.api.model.symfony.ProductGroupContainer item = ig.next();
-            p.add(new ProductGroupContainer(item.title, item.href));
+            plist.add(new ProductGroupContainer(item.title, item.href));
         }
 
-        return p;
+        return plist;
     }
 
     public void init() {
         mainlogic.build();
     }
+
+    public void init(final FragmentManager ctxgr) {
+        mainlogic.addFragmentTrigger(new icontainer() {
+            @Override
+            public void showDialogPickerNumber() {
+                listNumberPicker.newInstsance(B.numberPickerDataBundle(
+                        "Quantity",
+                        100,
+                        1
+                )).setSelectionListener(numberpicker).show(ctxgr, bottom_sheet_id);
+            }
+
+            @Override
+            public void showPickerListStringDialog(String title, List<String> list) {
+                if (list.size() == 0) return;
+                listDialog.newInstsance(B.getListStringChoices(
+                        "Size Choices",
+                        new ArrayList<String>(list)
+                )).setSelectionListener(stringlistpicker).show(ctxgr, bottom_sheet_id);
+            }
+
+            @Override
+            public void showFragmentDialog() {
+                if (plist.size() == 0) return;
+                listDialog.newInstsance(B.getListChoices(
+                        "Color Choices",
+                        plist
+                )).setSelectionListener(grouplistpicker).show(ctxgr, bottom_sheet_id);
+
+            }
+        });
+        mainlogic.build();
+    }
+
+
+    private final selectItem stringlistpicker = new selectItem() {
+        @Override
+        public void onItemSelect(int position, String key, String value) {
+            mainlogic.updateSizeLabel(key);
+        }
+    };
+    private final selectItem grouplistpicker = new selectItem() {
+        @Override
+        public void onItemSelect(int position, String key, String value) {
+            mainlogic.updateGroupLabel(key);
+        }
+    };
+    private final selectItem numberpicker = new selectItem() {
+        @Override
+        public void onItemSelect(int position, String key, String value) {
+            mainlogic.updateQuantityLabel(key);
+        }
+    };
 
 
     @Override
@@ -186,10 +204,12 @@ public class SelectionNewHelper extends classicHelper implements Callback<Respon
         try {
             setStatus(STATUS_BUSY);
             final String href = mProductContainer.getProductGroupContainer().get(group).href;
-            final List<String> h = Uri.parse(href).getPathSegments();
+            //  final List<String> h = Uri.parse(href).getPathSegments();
             holding_quantity = quantity;
             onExploreRelatedProduct = true;
-            client.FullPathReq(h.get(0), h.get(1), h.get(2), this);
+            //    client.(h.get(0), h.get(1), h.get(2), this);
+            final SingleProduct created = HBStoreApiClient.getInstance(activity).createEndpointSingle(href);
+            created.retrieve(this);
         } catch (Exception e) {
             e.printStackTrace();
         }

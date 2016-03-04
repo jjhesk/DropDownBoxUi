@@ -2,11 +2,11 @@ package hkm.ui.ddbox.test;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+
+import com.flipboard.bottomsheet.BottomSheetLayout;
 
 import hkm.ui.ddbox.test.apiHelper.SelectionNewHelper;
 
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Button redraw, triggererror, button_addcart;
     private SelectionNewHelper wrapped_object;
     private FrameLayout holder_container;
+    private BottomSheetLayout bslayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +29,14 @@ public class MainActivity extends AppCompatActivity {
         triggererror = (Button) findViewById(R.id.button_error);
         button_addcart = (Button) findViewById(R.id.button_addcart);
         holder_container = (FrameLayout) findViewById(R.id.selection_holder);
+        bslayout = (BottomSheetLayout) findViewById(R.id.actionsheet);
+
         wrapped_object = new SelectionNewHelper(this, holder_container, 49910);
+        wrapped_object.addFlipBoardBottomSheet(R.id.actionsheet);
         redraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wrapped_object.init();
+                wrapped_object.init(getSupportFragmentManager());
             }
         });
 
@@ -49,27 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 wrapped_object.confirm();
             }
         });
+
+
+        wrapped_object.init(getSupportFragmentManager());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="box_ui_text_id" type="id" />
-    <item name="box_ui_triangles" type="id" />
-    <item name="box_touch_area" type="id" />
+    <item name="ddui_text_id" type="id" />
+    <item name="ddui_triangles" type="id" />
+    <item name="ddui_touch_area" type="id" />
     <item name="hkmspinnersheet_back" type="id" />
     <item name="hkmspinnersheet_topposition" type="id" />
     <item name="hkmspinnersheet_title" type="id" />
@@ -11,6 +11,9 @@
     <item name="hkmspinnersheet_confirm" type="id" />
     <item name="hkmspinnersheet_list" type="id" />
     <item name="hkmspinnersheet_picker" type="id" />
+    <item name="hkmspinnersheet_editor" type="id" />
+    <item name="hkmspinnersheet_rightside" type="id" />
+    <item name="hkmspinnersheet_center" type="id" />
     <!-- textview -->
     <item name="hkmspinnersheet_list_textview" type="id" />
     <item name="hkm_sp_lc1" type="id" />

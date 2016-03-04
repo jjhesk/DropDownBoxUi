@@ -1,12 +1,7 @@
 package hkm.ui.ddbox.lib;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,24 +10,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
-import com.twotoasters.jazzylistview.JazzyHelper;
-import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import hkm.ui.ddbox.lib.bottomsheet.BottomSheetBase;
-import hkm.ui.ddbox.lib.bottomsheet.NumberPickerDialog;
-import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
-import hkm.ui.ddbox.lib.bottomsheet.onCallBackSimple;
-import hkm.ui.ddbox.lib.bottomsheet.spinnerCallBack;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.BottomSheetBase;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.NumberPickerDialog;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.SingleStringBS;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.onCallBackSimple;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.spinnerCallBack;
 import hkm.ui.ddbox.lib.data.ProductGroupContainer;
 import hkm.ui.ddbox.lib.data.RecyclerItemClickListener;
-import hkm.ui.ddbox.lib.data.SampleAdapter;
+import hkm.ui.ddbox.lib.data.SimpleStringAdapter;
 
 /**
  * Created by hesk on 3/11/15.
@@ -41,8 +33,6 @@ public class SelectionSP extends onCallBackSimple {
     private static final String KEY_TRANSITION_EFFECT = "transition_effect";
     public final static String TAG = "showlist";
     private int choice_of_variance = 0, choice_of_quantity = 0, choice_of_size;
-    private JazzyRecyclerViewScrollListener jazzyScrollListener;
-    private int mCurrentTransitionEffect = JazzyHelper.FADE;
     private BottomSheetBase numberpicker, listpicker;
     private boolean lock_quantity_dropdown;
     private final int
@@ -51,6 +41,7 @@ public class SelectionSP extends onCallBackSimple {
             layout_options22 = R.layout.options_22,
             layout_options3 = R.layout.options_3;
     private supporttype current_choosing_type = supporttype.NONE;
+    private icontainer show_fragment;
 
     private enum supporttype {
         VARIANT, COLOR, SIZE, QTY, NONE
@@ -130,6 +121,11 @@ public class SelectionSP extends onCallBackSimple {
         return this;
     }
 
+    public SelectionSP addFragmentTrigger(icontainer msheet) {
+        show_fragment = msheet;
+        return this;
+    }
+
     private Droptouch quantity, size, group;
     private int max_pickable_number;
 
@@ -139,6 +135,7 @@ public class SelectionSP extends onCallBackSimple {
             quantity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     showDialogPickerNumber();
                 }
             });
@@ -165,6 +162,21 @@ public class SelectionSP extends onCallBackSimple {
             group.setLabel(mcontext.getString(R.string.group));
         }
         return v;
+    }
+
+    public void updateGroupLabel(String selection) {
+        if (group == null) return;
+        group.setLabel(selection);
+    }
+
+    public void updateSizeLabel(String selection) {
+        if (size == null) return;
+        size.setLabel(selection);
+    }
+
+    public void updateQuantityLabel(String selection) {
+        if (quantity == null) return;
+        quantity.setLabel(selection);
     }
 
     public void build() {
@@ -206,17 +218,20 @@ public class SelectionSP extends onCallBackSimple {
 
         if (list.size() == 0) return;
         current_choosing_type = supporttype.SIZE;
-        if (listpicker == null) {
-            defaultsizeListDialog(title, list);
-        } else {
-            if (listpicker instanceof SingleStringBS) {
-                SingleStringBS dialog = (SingleStringBS) listpicker;
-                dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
-                dialog.setListData(list);
-                dialog.setTitle(title);
+        if (show_fragment == null) {
+            if (listpicker == null) {
+                defaultsizeListDialog(title, list);
+            } else {
+                if (listpicker instanceof SingleStringBS) {
+                    SingleStringBS dialog = (SingleStringBS) listpicker;
+                    dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
+                    dialog.setListData(list);
+                    dialog.setTitle(title);
+                }
             }
+        } else {
+            show_fragment.showPickerListStringDialog(title, list);
         }
-
     }
 
     /**
@@ -225,30 +240,36 @@ public class SelectionSP extends onCallBackSimple {
     private void normalListDialog(String title, List<ProductGroupContainer> list) {
         if (list.size() == 0) return;
         current_choosing_type = supporttype.VARIANT;
-        if (listpicker == null) {
-            defaultnormalListDialog(title, list);
-        } else {
-            if (listpicker instanceof SingleStringBS) {
-                final SingleStringBS dialog = (SingleStringBS) listpicker;
-                dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
-                dialog.setListData(containerToList(list));
-                dialog.setTitle(title);
+        if (show_fragment == null) {
+            if (listpicker == null) {
+                defaultnormalListDialog(title, list);
+            } else {
+                if (listpicker instanceof SingleStringBS) {
+                    final SingleStringBS dialog = (SingleStringBS) listpicker;
+                    dialog.show(mcontext.getFragmentManager().beginTransaction(), "listpicker");
+                    dialog.setListData(containerToList(list));
+                    dialog.setTitle(title);
+                }
             }
+        } else {
+            show_fragment.showFragmentDialog();
         }
     }
 
-    /**
-     * shows the number picker dialog at the screen
-     */
-    private void showDialogPickerNumber() {
+
+    public void showDialogPickerNumber() {
         current_choosing_type = supporttype.QTY;
         if (lock_quantity_dropdown) {
             cb.onDialogQuantityBoxNotAvailable(this);
         } else {
-            if (numberpicker == null) {
-                defaultnumberpicker();
+            if (show_fragment == null) {
+                if (numberpicker == null) {
+                    defaultnumberpicker();
+                } else {
+                    numberpicker.show(mcontext.getFragmentManager().beginTransaction(), "NumPicker");
+                }
             } else {
-                numberpicker.show(mcontext.getFragmentManager().beginTransaction(), "NumPicker");
+                show_fragment.showDialogPickerNumber();
             }
         }
     }
@@ -301,7 +322,7 @@ public class SelectionSP extends onCallBackSimple {
         final RecyclerView mlist = (RecyclerView) d.findViewById(R.id.list);
         mlist.setLayoutManager(createLayoutManager(R.layout.item, false));
         mlist.setHasFixedSize(true);
-        mlist.setAdapter(new SampleAdapter(list));
+        mlist.setAdapter(new SimpleStringAdapter(list));
         mlist.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -311,8 +332,8 @@ public class SelectionSP extends onCallBackSimple {
                 d.dismiss();
             }
         }));
-        jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        mlist.addOnScrollListener(jazzyScrollListener);
+        //  jazzyScrollListener = new JazzyRecyclerViewScrollListener();
+        //  mlist.addOnScrollListener(jazzyScrollListener);
         d.show();
     }
 
@@ -322,7 +343,7 @@ public class SelectionSP extends onCallBackSimple {
         d.setContentView(R.layout.default_selection_dialog);
         final RecyclerView list = (RecyclerView) d.findViewById(R.id.list);
         list.setLayoutManager(createLayoutManager(R.layout.item, false));
-        list.setAdapter(new SampleAdapter(flist, false));
+        list.setAdapter(new SimpleStringAdapter(flist, false));
         list.setHasFixedSize(true);
         list.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -332,20 +353,20 @@ public class SelectionSP extends onCallBackSimple {
                 d.dismiss();
             }
         }));
-        jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        list.addOnScrollListener(jazzyScrollListener);
+        //  jazzyScrollListener = new JazzyRecyclerViewScrollListener();
+        //  list.addOnScrollListener(jazzyScrollListener);
         d.show();
     }
 
 
-    public void initInstanceState(Bundle savedInstanceState) {
+  /*  public void initInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             mCurrentTransitionEffect = savedInstanceState.getInt(KEY_TRANSITION_EFFECT, mCurrentTransitionEffect);
             setupJazziness(mCurrentTransitionEffect);
         }
-    }
+    }*/
 
-    public void onSaveInstanceState(Bundle outState) {
+ /*   public void onSaveInstanceState(Bundle outState) {
         outState.putInt(KEY_TRANSITION_EFFECT, mCurrentTransitionEffect);
     }
 
@@ -353,7 +374,7 @@ public class SelectionSP extends onCallBackSimple {
         mCurrentTransitionEffect = effect;
         jazzyScrollListener.setTransitionEffect(mCurrentTransitionEffect);
     }
-
+*/
 
     @Override
     public void onNumberSelected(int quantity) {

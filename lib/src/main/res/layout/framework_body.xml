@@ -4,37 +4,30 @@
     xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/button_face"
+    android:background="@android:color/white"
     android:padding="0dp">
 
-    <com.andexert.library.RippleView
-        android:id="@id/box_touch_area"
+    <RelativeLayout
+        android:id="@id/ddui_touch_area"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        ripple:rv_centered="false"
-        ripple:rv_color="@color/rippleCole"
-        ripple:rv_framerate="6"
-        ripple:rv_type="simpleRipple"
-        ripple:rv_zoom="false">
+        android:layout_height="match_parent">
 
-        <com.neopixl.pixlui.components.textview.TextView
-            android:id="@id/box_ui_text_id"
+        <TextView
+            android:id="@id/ddui_text_id"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="7dp"
-            android:layout_toLeftOf="@id/box_ui_triangles"
+            android:layout_toLeftOf="@id/ddui_triangles"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
+            android:singleLine="true"
             android:text="@string/demo"
-            android:textColor="@color/box_text"
-            pixlui:clearclipboardcontent="true"
-            pixlui:copyandpaste="false" />
-        <!-- pixlui:typeface="GearedSlab.ttf"-->
-        <com.neopixl.pixlui.components.imageview.ImageView
-            android:id="@id/box_ui_triangles"
+            android:textColor="@color/box_text" />
+
+        <ImageView
+            android:id="@id/ddui_triangles"
             android:layout_width="7dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -43,5 +36,5 @@
             android:layout_marginRight="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/triangles" />
-    </com.andexert.library.RippleView>
+    </RelativeLayout>
 </RelativeLayout>

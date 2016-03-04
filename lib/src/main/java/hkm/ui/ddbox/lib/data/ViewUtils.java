@@ -62,9 +62,9 @@ public class ViewUtils {
 
     @SuppressLint("NewApi")
     public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
-        if (Build.VERSION.SDK_INT < 16)
+        if (Build.VERSION.SDK_INT < 16) {
             v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
-        else v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+        } else v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
     }
 
     private static void addSpace(Context ctx, LinearLayout container, @DimenRes int resDimension) {

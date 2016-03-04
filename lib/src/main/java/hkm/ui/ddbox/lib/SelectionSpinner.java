@@ -21,20 +21,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
-import com.twotoasters.jazzylistview.JazzyHelper;
-import com.twotoasters.jazzylistview.recyclerview.JazzyRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import hkm.ui.ddbox.lib.bottomsheet.BottomSheetBase;
-import hkm.ui.ddbox.lib.bottomsheet.SingleStringBS;
-import hkm.ui.ddbox.lib.bottomsheet.onCallBackSimple;
-import hkm.ui.ddbox.lib.bottomsheet.spinnerCallBack;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.BottomSheetBase;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.SingleStringBS;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.onCallBackSimple;
+import hkm.ui.ddbox.lib.fragmentdialogclassic.spinnerCallBack;
 import hkm.ui.ddbox.lib.data.ProductGroupContainer;
 import hkm.ui.ddbox.lib.data.RecyclerItemClickListener;
-import hkm.ui.ddbox.lib.data.SampleAdapter;
+import hkm.ui.ddbox.lib.data.SimpleStringAdapter;
 import hkm.ui.ddbox.lib.data.ViewUtils;
 
 /**
@@ -60,8 +58,6 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
     private ArrayList<String> sizelist = new ArrayList<>();
 
     private int full_container_width;
-    private JazzyRecyclerViewScrollListener jazzyScrollListener;
-    private int mCurrentTransitionEffect = JazzyHelper.FADE;
     private BottomSheetBase numberpicker, listpicker;
     private spinnerCallBack cb = new spinnerCallBack() {
         @Override
@@ -490,7 +486,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         final RecyclerView mlist = (RecyclerView) d.findViewById(R.id.list);
         mlist.setLayoutManager(createLayoutManager(R.layout.item, false));
         mlist.setHasFixedSize(true);
-        mlist.setAdapter(new SampleAdapter(list));
+        mlist.setAdapter(new SimpleStringAdapter(list));
         mlist.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -500,8 +496,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
                 d.dismiss();
             }
         }));
-        jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        mlist.addOnScrollListener(jazzyScrollListener);
+
         d.show();
     }
 
@@ -511,7 +506,7 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
         d.setContentView(R.layout.default_selection_dialog);
         final RecyclerView list = (RecyclerView) d.findViewById(R.id.list);
         list.setLayoutManager(createLayoutManager(R.layout.item, false));
-        list.setAdapter(new SampleAdapter(flist, false));
+        list.setAdapter(new SimpleStringAdapter(flist, false));
         list.setHasFixedSize(true);
         list.addOnItemTouchListener(new RecyclerItemClickListener(mcontext, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -521,27 +516,11 @@ public class SelectionSpinner extends onCallBackSimple implements View.OnClickLi
                 d.dismiss();
             }
         }));
-        jazzyScrollListener = new JazzyRecyclerViewScrollListener();
-        list.addOnScrollListener(jazzyScrollListener);
+
         d.show();
     }
 
 
-    public void initInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mCurrentTransitionEffect = savedInstanceState.getInt(KEY_TRANSITION_EFFECT, JazzyHelper.HELIX);
-            setupJazziness(mCurrentTransitionEffect);
-        }
-    }
-
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(KEY_TRANSITION_EFFECT, mCurrentTransitionEffect);
-    }
-
-    private void setupJazziness(int effect) {
-        mCurrentTransitionEffect = effect;
-        jazzyScrollListener.setTransitionEffect(mCurrentTransitionEffect);
-    }
 
 
     @Override

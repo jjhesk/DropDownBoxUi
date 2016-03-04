@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DropDownBoxUi.iml" filepath="$PROJECT_DIR$/DropDownBoxUi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SDKlibrary/SDKlibrary.iml" filepath="$PROJECT_DIR$/SDKlibrary/SDKlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
     </modules>
